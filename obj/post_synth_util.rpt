@@ -1,0 +1,45 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
+| Date         : Wed Nov  6 20:20:45 2024
+| Host         : eecs-digital-42 running 64-bit Ubuntu 24.04.1 LTS
+| Command      : report_utilization -file obj/post_synth_util.rpt -hierarchical -hierarchical_depth 4
+| Design       : top_level
+| Device       : xc7s50csga324-1
+| Speed File   : -1
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++------------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+|        Instance        |            Module            | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
++------------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+| top_level              |                        (top) |        293 |        293 |       0 |    0 | 214 |      0 |      0 |          0 |
+|   (top_level)          |                        (top) |          0 |          0 |       0 |    0 |  18 |      0 |      0 |          0 |
+|   blue_ser             |              tmds_serializer |          0 |          0 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   counter_8khz_trigger |                      counter |         27 |         27 |       0 |    0 |  32 |      0 |      0 |          0 |
+|   green_ser            |            tmds_serializer_0 |          0 |          0 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   mvg                  |                video_sig_gen |         81 |         81 |       0 |    0 |  21 |      0 |      0 |          0 |
+|   my_pong              |                         pong |        124 |        124 |       0 |    0 |  32 |      0 |      0 |          0 |
+|     (my_pong)          |                         pong |         96 |         96 |       0 |    0 |  32 |      0 |      0 |          0 |
+|     paddle             |                 block_sprite |         10 |         10 |       0 |    0 |   0 |      0 |      0 |          0 |
+|     puck               | block_sprite__parameterized0 |         18 |         18 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   my_spi_con           |                      spi_con |         22 |         22 |       0 |    0 |  39 |      0 |      0 |          0 |
+|   red_ser              |            tmds_serializer_1 |          1 |          1 |       0 |    0 |   1 |      0 |      0 |          0 |
+|   tmds_blue            |                 tmds_encoder |          2 |          2 |       0 |    0 |   8 |      0 |      0 |          0 |
+|   tmds_green           |               tmds_encoder_2 |          3 |          3 |       0 |    0 |   7 |      0 |      0 |          0 |
+|   tmds_red             |               tmds_encoder_3 |          3 |          3 |       0 |    0 |   8 |      0 |      0 |          0 |
+|   uart_to_comp         |                uart_transmit |         48 |         48 |       0 |    0 |  48 |      0 |      0 |          0 |
+|   wizard_hdmi          |              cw_hdmi_clk_wiz |          0 |          0 |       0 |    0 |   0 |      0 |      0 |          0 |
+|   wizard_migcam        |              cw_fast_clk_wiz |          0 |          0 |       0 |    0 |   0 |      0 |      0 |          0 |
++------------------------+------------------------------+------------+------------+---------+------+-----+--------+--------+------------+
+
+
