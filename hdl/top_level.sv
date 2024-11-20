@@ -27,11 +27,11 @@ module top_level
     assign sys_rst = btn[0];
 
     // clock bs
-    logic          clk_camera;
-    logic          clk_pixel;
-    logic          clk_5x;
-    logic          clk_xc;
-    logic          clk_100_passthrough;
+    logic          clk_camera; // not used
+    logic          clk_pixel; // the pixel drawing clock
+    logic          clk_5x; // used for outputting hdmi
+    logic          clk_xc; // not used
+    logic          clk_100_passthrough; // the 100mhz clock for everything else
 
     // clocking wizards to generate the clock speeds we need for our different domains
     // clk_camera: 200MHz, fast enough to comfortably sample the cameera's PCLK (50MHz)
@@ -99,6 +99,31 @@ module top_level
             audio_sample <= spi_read_data[9:2];
         end
     end
+
+
+    // xilinx_true_dual_port_read_first_2_clock_ram
+    // #(.RAM_WIDTH(BRAM_WIDTH),
+    //   .RAM_DEPTH(BRAM_DEPTH)) audio_bram
+    //   (
+    //    // PORT A
+    //    .addra(addra),
+    //    .dina(0), // we only use port A for reads!
+    //    .clka(clk_100mhz),
+    //    .wea(1'b0), // read only
+    //    .ena(1'b1),
+    //    .rsta(sys_rst),
+    //    .regcea(1'b1),
+    //    .douta(douta),
+    //    // PORT B
+    //    .addrb(addrb),
+    //    .dinb(dinb),
+    //    .clkb(clk_100mhz),
+    //    .web(1'b1), // write always
+    //    .enb(1'b1),
+    //    .rstb(sys_rst),
+    //    .regceb(1'b1),
+    //    .doutb() // we only use port B for writes!
+    //    );
 
     // Data Buffer SPI-UART
     // TODO: write some sequential logic to keep track of whether the

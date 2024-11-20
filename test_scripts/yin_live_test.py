@@ -6,6 +6,14 @@ from scipy.io import wavfile
 import serial
 import wave
 
+
+# opens serial port, waits for 6 seconds of 8kHz audio data, writes it to output.wav
+
+# set to proper serial port name and WAV!
+# find the port name using test_ports.py
+# CHANGE ME
+
+
 def yin(signal, sample_rate, fmin=50, fmax=1500, threshold=0.1):
     """
     Estimate the fundamental frequency (F0) of a signal using the YIN algorithm.
@@ -79,12 +87,70 @@ def split_signal_into_windows(signal, window_size):
     num_windows = len(signal) // window_size
     return [signal[window_size * i : window_size * (i + 1)] for i in range(num_windows)]
 
+def run_live():
+    plt.ion()
+    fig, ax = plt.subplots()
+    line, = ax.plot([i for i in range(100)], np.zeros(100))  # Initialize with zeros
+    ax.set_ylim(0, 1000)
+    ax.set_xlim(0, 100)
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Amplitude')
+
+    SERIAL_PORT_NAME = "/dev/cu.usbserial-8874042402F51"
+    BAUD_RATE = 115200
+
+    WINDOW = 600
+
+    ser = serial.Serial(SERIAL_PORT_NAME,BAUD_RATE)
+    print("Serial port initialized")
+
+    print("Starting recording")
+    ypoints = np.array([])
+    freqs = []
+    i = 0
+    while True:
+        val = int.from_bytes(ser.read(),'little')
+        # print(len(ypoints))
+
+        ypoints = np.append(ypoints, val)
+        if len(ypoints) > WINDOW:
+            ypoints = ypoints[1:]
+            if ((i+1)%(WINDOW//3)==0):
+                filtered = butter_bandpass_filter(ypoints, 10000, 20000, 8000, 7)
+                new_freq = yin(filtered, 8000)
+                if len(freqs) > 1:
+                    # freqs.append(new_freq * .5 + freqs[-1] * .3 + freqs[-2] * .2)
+                    if new_freq < 100:
+                        freqs.append(freqs[-1])
+                    elif abs(new_freq - freqs[-1]) > 50:
+                        freqs.append(new_freq * .2 + freqs[-1] * .8)
+                    else:
+                        freqs.append(new_freq)
+                else:
+                    freqs.append(new_freq)
+                if len(freqs) > 100:
+                    freqs = freqs[1:]
+                if len(freqs) == 100:
+                    print('asdf')
+                    line.set_ydata(freqs)
+                    fig.canvas.draw()
+                    fig.canvas.flush_events()
+                print(new_freq)
+                
+        i = i + 1
+        # print(i)
+
+# run_live()
+
+# Example usage
 if __name__ == "__main__":
     sample_rate, signal = wavfile.read('c_sing.wav')
     _, noise = wavfile.read('noise.wav')
 
-    signal = butter_bandpass_filter(signal, 100, 1000, 8000, 3)
-    print(type(signal))
+    # signal = np.subtract(signal, noise)
+    signal = butter_bandpass_filter(signal, 100, 1500, 8000, 7)
+    # for i in range(10000, 10100):
+    #     print(signal[i])
     duration = len(signal)/sample_rate  # seconds
     window_size = 500 # samples
 
@@ -96,8 +162,6 @@ if __name__ == "__main__":
     f0 = []
     for sample in signal_samples:
         f0.append(min(yin(sample, sample_rate), 700))
-    
-    # f0 = butter_bandpass_filter(f0, 100, 3999, 8000, 3)
 
     # Apply YIN algorithm
     estimated_f0 = yin(signal, sample_rate)
