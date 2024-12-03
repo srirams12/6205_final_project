@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module bandpass
 # (
     parameter SIG_WIDTH = 8,

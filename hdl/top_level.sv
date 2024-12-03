@@ -50,21 +50,31 @@ module top_level
         .reset(0)
     );
 
-    // 8kHz trigger
-    localparam CYCLES_PER_TRIGGER = 12500; // MUST CHANGE
-
-    logic [31:0]        trigger_count;
+    // 8kHz trigger for the microphone
+    localparam CYCLES_PER_TRIGGER_MIC = 12500;
+    logic [31:0]        trigger_count_mic;
     logic               spi_trigger;
-
     counter counter_8khz_trigger (
         .clk_in(clk_100_passthrough),
         .rst_in(sys_rst),
-        .period_in(CYCLES_PER_TRIGGER),
-        .count_out(trigger_count)
+        .period_in(CYCLES_PER_TRIGGER_MIC),
+        .count_out(trigger_count_mic)
     );
+    assign spi_trigger = trigger_count_mic == 0 ? 1 : 0;
 
-    // TODO: use the trigger_count output to make spi_trigger a single-cycle high with 8kHz frequency
-    assign spi_trigger = trigger_count == 0 ? 1 : 0; // MUST CHANGE
+
+    // 100hz trigger for the yin
+    localparam CYCLES_PER_TRIGGER_YIN = 1000000; // MUST CHANGE
+    logic [31:0]        trigger_count_yin;
+    logic               yin_trigger;
+    counter counter_100hz_trigger (
+        .clk_in(clk_100_passthrough),
+        .rst_in(sys_rst),
+        .period_in(CYCLES_PER_TRIGGER_YIN),
+        .count_out(trigger_count_yin)
+    );
+    assign yin_trigger = trigger_count_yin == 0 ? 1 : 0;
+
 
     // SPI Controller on our ADC
     parameter ADC_DATA_WIDTH = 17; //MUST CHANGE
@@ -100,72 +110,18 @@ module top_level
         end
     end
 
+    logic[31:0] f0;
+    logic f0_valid;
 
-    // xilinx_true_dual_port_read_first_2_clock_ram
-    // #(.RAM_WIDTH(BRAM_WIDTH),
-    //   .RAM_DEPTH(BRAM_DEPTH)) audio_bram
-    //   (
-    //    // PORT A
-    //    .addra(addra),
-    //    .dina(0), // we only use port A for reads!
-    //    .clka(clk_100mhz),
-    //    .wea(1'b0), // read only
-    //    .ena(1'b1),
-    //    .rsta(sys_rst),
-    //    .regcea(1'b1),
-    //    .douta(douta),
-    //    // PORT B
-    //    .addrb(addrb),
-    //    .dinb(dinb),
-    //    .clkb(clk_100mhz),
-    //    .web(1'b1), // write always
-    //    .enb(1'b1),
-    //    .rstb(sys_rst),
-    //    .regceb(1'b1),
-    //    .doutb() // we only use port B for writes!
-    //    );
 
-    // Data Buffer SPI-UART
-    // TODO: write some sequential logic to keep track of whether the
-    //  current audio_sample is waiting to be sent,
-    //  and to set the uart_transmit inputs appropriately.
-    //  **be sure to only ever set uart_data_valid high if sw[0] is on,
-    //  so we only send data on UART when we're trying to receive it!
-    logic                      audio_sample_waiting;
-
-    logic [7:0]                uart_data_in;
-    logic                      uart_data_valid;
-    logic                      uart_busy;
-
-    always_ff @(posedge clk_100_passthrough) begin
-        if (uart_data_valid) begin
-            uart_data_valid <= 0;
-        end
-        if (spi_read_data_valid && !audio_sample_waiting) begin
-            audio_sample_waiting <= 1;
-            if (uart_busy == 0 && sw[0]) begin
-                uart_data_valid <= 1;
-                uart_data_in <= audio_sample;
-            end
-        end else if (audio_sample_waiting) begin
-            if (uart_busy == 0) begin
-                audio_sample_waiting <= 0;
-            end
-        end
-   end
-
-   // UART Transmitter to FTDI2232
-   // TODO: instantiate the UART transmitter you just wrote, using the input signals from above.
-    uart_transmit #(
-        .BAUD_RATE(115200)
-    )
-    uart_to_comp (
+    audio_processing audio_processor (
         .clk_in(clk_100_passthrough),
         .rst_in(sys_rst),
-        .data_byte_in(uart_data_in),
-        .trigger_in(uart_data_valid),
-        .busy_out(uart_busy),
-        .tx_wire_out(uart_txd)
+        .audio_in(spi_read_data[9:2]),
+        .audio_in_valid(spi_read_data_valid),
+        .start_computation(yin_trigger),
+        .f_out(f0),
+        .f_out_valid(f0_valid)
     );
 
 

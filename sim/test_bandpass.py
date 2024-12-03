@@ -69,18 +69,12 @@ def yin(signal, sample_rate, fmin=50, fmax=1500, threshold=0.1):
 
 
 # Parameters
-frequency = 300  # Frequency of sine wave in Hz
-sample_rate = 10000  # Number of samples
-amplitude = 127.5  # Amplitude (scaled to 0-255 range)
-
-# Generate time values
-t = np.linspace(0, 1, sample_rate, endpoint=False)  # Time values from 0 to 1 second
-
-# Generate sine wave
-sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)  # Shift sine wave to range [0, 255]
-
-# Clip the values to the range [0, 255] to ensure valid byte values
-sine_wave = np.clip(sine_wave, 0, 255)
+frequency = 300
+sample_rate = 8000
+amplitude = 127
+t = np.linspace(0, 1, sample_rate, endpoint=False)
+t = t[:500]
+sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 
 sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
 
@@ -103,8 +97,8 @@ async def test_a(dut):
     await ClockCycles(dut.clk_in, 3) #wait a few clock cycles
     dut.rst_in.value = 0
 
-    for i in range(len(signal)):
-        dut.x_in.value = int(signal[i])
+    for i in range(len(sine_wave)):
+        dut.x_in.value = int(sine_wave[i])
         dut.x_in_valid.value = 1
 
         await ClockCycles(dut.clk_in, 1)
@@ -120,7 +114,9 @@ async def test_a(dut):
     # plt.plot([i for i in range(len(signal))], signal)
     # plt.show()
     print(f'{filtered[:10]=}')
-    print(max(filtered))
+    print(f'{max(filtered)=}')
+    print(f'{min(filtered)=}')
+
     print(f'{yin(np.array(filtered), 8000)=}')
     plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
     plt.show()

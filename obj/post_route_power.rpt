@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date             : Wed Nov  6 20:21:07 2024
-| Host             : eecs-digital-42 running 64-bit Ubuntu 24.04.1 LTS
+| Date             : Tue Dec  3 16:32:18 2024
+| Host             : eecs-digital-14 running 64-bit Ubuntu 24.04.1 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
 | Device           : xc7s50csga324-1
@@ -30,7 +30,7 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.426        |
+| Total On-Chip Power (W)  | 0.425        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
 | Dynamic (W)              | 0.353        |
@@ -53,17 +53,17 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.004 |        8 |       --- |             --- |
-| Slice Logic    |    <0.001 |      724 |       --- |             --- |
-|   LUT as Logic |    <0.001 |      287 |     32600 |            0.88 |
-|   CARRY4       |    <0.001 |       77 |      8150 |            0.94 |
-|   Register     |    <0.001 |      214 |     65200 |            0.33 |
-|   Others       |     0.000 |       35 |       --- |             --- |
-| Signals        |    <0.001 |      455 |       --- |             --- |
+| Slice Logic    |    <0.001 |      524 |       --- |             --- |
+|   LUT as Logic |    <0.001 |      226 |     32600 |            0.69 |
+|   CARRY4       |    <0.001 |       57 |      8150 |            0.70 |
+|   Register     |    <0.001 |      129 |     65200 |            0.20 |
+|   Others       |     0.000 |       33 |       --- |             --- |
+| Signals        |    <0.001 |      306 |       --- |             --- |
 | MMCM           |     0.105 |        1 |         5 |           20.00 |
 | PLL            |     0.101 |        1 |         5 |           20.00 |
-| I/O            |     0.142 |       47 |       210 |           22.38 |
+| I/O            |     0.142 |       45 |       210 |           21.43 |
 | Static Power   |     0.072 |          |           |                 |
-| Total          |     0.426 |          |           |                 |
+| Total          |     0.425 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
