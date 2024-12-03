@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1733263579" />
-    <testcase name="test_a" classname="test_bandpass" file="/Users/sriram/Documents/digital_systems/final_project/sim/test_bandpass.py" lineno="92" time="14.646523237228394" sim_time_ns="65150.001" ratio_time="4448.154687960508" />
-  </testsuite>
-</testsuites>
