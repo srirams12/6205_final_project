@@ -77,7 +77,7 @@ t = t[:500]
 sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 
 sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
-
+signal = signal[20000:20501]
 step = [127]
 for i in range(255):
     step.append(255)
@@ -97,8 +97,8 @@ async def test_a(dut):
     await ClockCycles(dut.clk_in, 3) #wait a few clock cycles
     dut.rst_in.value = 0
 
-    for i in range(len(sine_wave)):
-        dut.x_in.value = int(sine_wave[i])
+    for i in range(len(signal)):
+        dut.x_in.value = int(signal[i])
         dut.x_in_valid.value = 1
 
         await ClockCycles(dut.clk_in, 1)
