@@ -15,7 +15,11 @@ module top_level
     output logic 		uart_txd, // UART FPGA-computer
     output logic [2:0] hdmi_tx_p, //hdmi output signals (positives) (blue, green, red)
     output logic [2:0] hdmi_tx_n, //hdmi output signals (negatives) (blue, green, red)
-    output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
+    output logic hdmi_clk_p, hdmi_clk_n, //differential hdmi clock
+    output logic [3:0] ss0_an,//anode control for upper four digits of seven-seg display
+    output logic [3:0] ss1_an,//anode control for lower four digits of seven-seg display
+    output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
+    output logic [6:0] ss1_c //cathode controls for the segments of lower four digits
 );
 
     //shut up those rgb LEDs for now (active high):
