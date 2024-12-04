@@ -18,12 +18,13 @@ module sd_access #(
     output wire chip_clk_out,     // SPI Clock
     output wire chip_sel_out,     // SPI Chip Select
     // RAM interface
-    output logic [clogb2(RAM_DEPTH-1)-1:0] ram_addr, // RAM address
+    output logic [$clog2(RAM_DEPTH)-1:0] ram_addr, // RAM address
     output logic [RAM_WIDTH-1:0] ram_din,           // RAM write data
     input wire [RAM_WIDTH-1:0] ram_dout,          // RAM read data
     output logic ram_we,                            // RAM write enable
     output logic ram_en                             // RAM enable
 );
+
 
     // FSM states
     typedef enum logic [3:0] {
@@ -48,7 +49,7 @@ module sd_access #(
     wire [7:0] spi_data_out;        // Data received from SPI controller
 
     // RAM Interface signals
-    logic [clogb2(RAM_DEPTH-1)-1:0] ram_addr; // RAM address
+    logic [$clog2(RAM_DEPTH-1)-1:0] ram_addr; // RAM address
     logic [RAM_WIDTH-1:0] ram_din;           // RAM write data
     wire [RAM_WIDTH-1:0] ram_dout;         // RAM read data
     logic ram_we;                            // RAM write enable

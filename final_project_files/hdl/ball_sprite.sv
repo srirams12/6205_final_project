@@ -33,15 +33,15 @@ module ball_sprite #(
   logic [23:0] dynamic_color;
   always_comb begin
     // Example logic to map `freq_in` to RGB color
-    dynamic_color = {freq_in, ~freq_in, freq_in ^ 8'hFF}; // Example: create a color gradient
+    dynamic_color = {freq_in[7:0], freq_in[7:0] + 85,freq_in[7:0] + 175 }; // Example: create a color gradient
   end
 
   // Output the color if the pixel is part of the sprite
   always_comb begin
     if (in_sphere) begin
-      red_out = dynamic_color[23:16];
-      green_out = dynamic_color[15:8];
-      blue_out = dynamic_color[7:0];
+      red_out = {dynamic_color[23:20], 0'h0};
+      green_out = {dynamic_color[15:12], 0'h0};
+      blue_out = {dynamic_color[7:4], 0'h0};
     end else begin
       red_out = 0;
       green_out = 0;
