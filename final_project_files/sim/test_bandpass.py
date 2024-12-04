@@ -76,7 +76,7 @@ t = np.linspace(0, 1, sample_rate, endpoint=False)
 t = t[:500]
 sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 
-sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
+sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
 signal = signal[20000:20501]
 step = [127]
 for i in range(255):
@@ -116,6 +116,9 @@ async def test_a(dut):
     print(f'{filtered[:10]=}')
     print(f'{max(filtered)=}')
     print(f'{min(filtered)=}')
+
+    plt.plot([i for i in range(len(signal))], [int(f) for f in signal])
+    plt.show()
 
     print(f'{yin(np.array(filtered), 8000)=}')
     plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
