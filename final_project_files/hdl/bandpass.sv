@@ -44,6 +44,9 @@ module bandpass
     end
 
     logic signed [COEF_WIDTH + COEF_WIDTH - 1:0] acc; // Accumulator for filter calculation
+    logic signed [COEF_WIDTH + COEF_WIDTH - 1:0] partial_acc1; // Accumulator for filter calculation
+    logic signed [COEF_WIDTH + COEF_WIDTH - 1:0] partial_acc2; // Accumulator for filter calculation
+    
     integer i;
     logic [4:0] counter;
 
@@ -55,6 +58,9 @@ module bandpass
             state <= IDLE;
 
             acc <= 0;
+            partial_acc1 <= 0;
+            partial_acc2 <= 0;
+
             for (i = 0; i < ORDER; i++) begin
                 y_prev[i] <= 0;
                 x_prev[i] <= 0;
@@ -69,6 +75,8 @@ module bandpass
                     if (x_in_valid) begin
                         state <= CALC;
                         acc <= 0;
+                        partial_acc1 <= 0;
+                        partial_acc2 <= 0;
                         counter <= 0;
                         x_cur <= x_in;
                     end
@@ -79,11 +87,15 @@ module bandpass
                         // first one
                         acc <= acc + ((b[0] * $signed({1'b0, x_cur})) << DEC_WIDTH);
                         counter <= 1;
-                    end else if (counter == ORDER+1) begin
+                    end else if (counter == ORDER+2) begin
                         // we're done
                         state <= UPDATE;
                     end else begin
-                        acc <= acc + ((b[counter] * $signed({1'b0, x_prev[counter-1]})) << DEC_WIDTH) - ((a[counter] * $signed({y_prev[counter-1]})));
+                        // acc <= acc + ((b[counter] * $signed({1'b0, x_prev[counter-1]})) << DEC_WIDTH) - ((a[counter] * $signed({y_prev[counter-1]})));
+                        partial_acc1 <= (b[counter] * $signed({1'b0, x_prev[counter-1]})) << DEC_WIDTH;
+                        partial_acc2 <= (a[counter] * $signed({y_prev[counter-1]}));
+                        
+                        acc <= acc + partial_acc1 - partial_acc2;
                         counter <= counter + 1;
                     end
                 end

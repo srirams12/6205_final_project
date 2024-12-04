@@ -27,12 +27,14 @@ module yinner #(
     logic [$clog2(WINDOW_SIZE):0] sample_num; // 0 -> 500, keeps track of which index is "index zero"
     logic [$clog2(WINDOW_SIZE):0] sample_counter; // "for loop" counter
 
-    // localparam TAU_MIN = SAMPLE_RATE / F_MAX;
-    localparam TAU_MIN = 0;
     localparam TAU_MAX = SAMPLE_RATE / F_MIN;
 
-    logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE): 0] df_buffer [0: TAU_MAX-TAU_MIN - 1];
-    logic [$clog2(TAU_MAX):0] tau; // 8 -> 80ish
+    logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE): 0] df_buffer [0: TAU_MAX - 1];
+    logic [$clog2(TAU_MAX):0] tau; // 0 -> 80ish
+    // pipelining stages
+    logic [2*SIG_WIDTH: 0] squared_diff;
+    logic [SIG_WIDTH-1: 0] diff;
+
 
     logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE) + $clog2(TAU_MAX): 0] diff_sum;
 
@@ -51,10 +53,10 @@ module yinner #(
     logic[$clog2(WINDOW_SIZE):0] lower_index;
     logic[$clog2(WINDOW_SIZE):0] upper_index;
 
-    always_comb begin
-        lower_index = sample_num + 1 + sample_counter < WINDOW_SIZE ? sample_num + 1 + sample_counter : sample_num + 1 + sample_counter - WINDOW_SIZE;
-        upper_index = sample_num + 1 + sample_counter + tau < WINDOW_SIZE ? sample_num + 1 + sample_counter + tau : sample_num + 1 + sample_counter + tau - WINDOW_SIZE;
-    end
+    // always_comb begin
+    //     // lower_index = sample_num + 1 + sample_counter < WINDOW_SIZE ? sample_num + 1 + sample_counter : sample_num + 1 + sample_counter - WINDOW_SIZE;
+    //     // upper_index = sample_num + 1 + sample_counter + tau < WINDOW_SIZE ? sample_num + 1 + sample_counter + tau : sample_num + 1 + sample_counter + tau - WINDOW_SIZE;
+    // end
 
     integer i;
 
@@ -87,17 +89,22 @@ module yinner #(
 
             state <= IDLE;
 
+            lower_index <= 0;
+            upper_index <= 0;
+
             for (i = 0; i < WINDOW_SIZE; i++) begin
                 sig_buffer[i] <= 0;
                 sig_buffer[i] <= 0;
             end
             sample_num <= 0;
             sample_counter <= 0;
-            for (i = 0; i < TAU_MAX-TAU_MIN; i++) begin
+            squared_diff <= 0;
+            diff <= 0;
+            for (i = 0; i < TAU_MAX; i++) begin
                 df_buffer[i] <= 0;
                 df_buffer[i] <= 0;
             end
-            tau <= TAU_MIN;
+            tau <= 0;
 
             sum_times_point_one <= 0;
             product <= 0;
@@ -119,47 +126,62 @@ module yinner #(
                     if (start_computation) begin
                         state <= DIFF_FUNCTION;
                         sample_counter <= 0;
-                        for (i = 0; i < TAU_MAX-TAU_MIN; i++) begin
+                        squared_diff <= 0;
+                        diff <= 0;
+                        for (i = 0; i < TAU_MAX; i++) begin
                             df_buffer[i] <= 0;
                             df_buffer[i] <= 0;
                         end
-                        tau <= TAU_MIN;
+                        tau <= 0;
+
+                        lower_index <= sample_num + 1 < WINDOW_SIZE ? sample_num + 1 : sample_num + 1 - WINDOW_SIZE;
+                        upper_index <= sample_num + 1 + tau < WINDOW_SIZE ? sample_num + 1 + tau : sample_num + 1 + tau - WINDOW_SIZE;
                     end
                 end
 
                 DIFF_FUNCTION: begin
                     if (sample_counter + tau + 1 < WINDOW_SIZE) begin
-                        df_buffer[tau - TAU_MIN] <= df_buffer[tau - TAU_MIN] + (sig_buffer[upper_index] - sig_buffer[lower_index]) * (sig_buffer[upper_index] - sig_buffer[lower_index]);
+                        diff <= sig_buffer[upper_index] - sig_buffer[lower_index];
+                        squared_diff <= $signed(diff) * $signed(diff);
+                        // squared_diff <= (sig_buffer[upper_index] - sig_buffer[lower_index]) * (sig_buffer[upper_index] - sig_buffer[lower_index]);
+                        df_buffer[tau] <= df_buffer[tau] + squared_diff;
+                        // df_buffer[tau] <= df_buffer[tau] + (sig_buffer[upper_index] - sig_buffer[lower_index]) * (sig_buffer[upper_index] - sig_buffer[lower_index]);
                         sample_counter <= sample_counter + 1;
+                        
+                        lower_index <= (lower_index == WINDOW_SIZE - 1) ? 0 : lower_index + 1;
+                        upper_index <= (upper_index == WINDOW_SIZE - 1) ? 0 : upper_index + 1;
+
                     end else begin
                         sample_counter <= 0;
                         tau <= tau + 1;
+                        diff <= 0;
+                        squared_diff <= 0;
+                        lower_index <= sample_num + 1 < WINDOW_SIZE ? sample_num + 1 : sample_num + 1 - WINDOW_SIZE;
+                        upper_index <= sample_num + 1 + tau < WINDOW_SIZE ? sample_num + 1 + tau : sample_num + 1 + tau - WINDOW_SIZE;
                         if (tau == TAU_MAX) begin
-                            tau <= TAU_MIN;
+                            tau <= 0;
                             state <= CMNDF;
                             diff_sum <= 0;
-                            
-                            // f_out_valid <= 1;
                         end
                     end
                 end
 
                 CMNDF: begin
                     if (tau == 0) begin
-                        // diff_sum <= df_buffer[tau - TAU_MIN];
+                        // diff_sum <= df_buffer[tau];
                         diff_sum <= 0;
                         tau <= tau + 1;
                     end else begin
                         if (tau <= TAU_MAX) begin
-                            sum_times_point_one <= ((diff_sum + df_buffer[tau-TAU_MIN]) * ZERO_POINT_ONE) >> DEC_WIDTH;
-                            product <= df_buffer[tau-TAU_MIN] * tau;
+                            sum_times_point_one <= ((diff_sum + df_buffer[tau]) * ZERO_POINT_ONE) >> DEC_WIDTH;
+                            product <= df_buffer[tau] * tau;
                             if (product < sum_times_point_one) begin
                                 // we've found our lag that works
                                 tau_final <= tau;
                                 state <= PI;
                             end else begin
                                 tau <= tau + 1;
-                                diff_sum <= diff_sum + df_buffer[tau-TAU_MIN];
+                                diff_sum <= diff_sum + df_buffer[tau];
                             end
                         end else begin
                             tau_final <= 0;
