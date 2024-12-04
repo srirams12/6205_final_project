@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Tue Dec  3 22:48:44 2024
-| Host         : eecs-digital-27 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Wed Dec  4 10:49:52 2024
+| Host         : eecs-digital-11 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing -file obj/post_route_timing.rpt
 | Design       : top_level
 | Device       : 7s50-csga324
@@ -12,7 +12,7 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanc
 
 Timing Report
 
-Slack (VIOLATED) :        -20.780ns  (required time - arrival time)
+Slack (VIOLATED) :        -20.979ns  (required time - arrival time)
   Source:                 audio_processor/my_yinner/f_out_reg[10]_replica/C
                             (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
   Destination:            tmds_red/count_reg[4]/D
@@ -20,11 +20,11 @@ Slack (VIOLATED) :        -20.780ns  (required time - arrival time)
   Path Group:             clk_pixel_cw_hdmi
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            0.034ns  (clk_pixel_cw_hdmi rise@1670.034ns - clk_100_cw_fast rise@1670.000ns)
-  Data Path Delay:        20.221ns  (logic 10.211ns (50.498%)  route 10.010ns (49.502%))
-  Logic Levels:           20  (CARRY4=4 DSP48E1=2 LUT2=2 LUT3=2 LUT4=1 LUT5=1 LUT6=8)
-  Clock Path Skew:        -0.109ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -2.082ns = ( 1667.952 - 1670.034 ) 
-    Source Clock Delay      (SCD):    -2.480ns = ( 1667.520 - 1670.000 ) 
+  Data Path Delay:        20.413ns  (logic 10.657ns (52.207%)  route 9.756ns (47.793%))
+  Logic Levels:           21  (CARRY4=5 DSP48E1=2 LUT2=2 LUT3=1 LUT4=4 LUT6=7)
+  Clock Path Skew:        -0.118ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.080ns = ( 1667.954 - 1670.034 ) 
+    Source Clock Delay      (SCD):    -2.469ns = ( 1667.531 - 1670.000 ) 
     Clock Pessimism Removal (CPR):    -0.507ns
   Clock Uncertainty:      0.513ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -43,58 +43,61 @@ Slack (VIOLATED) :        -20.780ns  (required time - arrival time)
                                                      -8.486  1664.208 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.660  1665.868    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096  1665.964 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7451, routed)        1.556  1667.520    audio_processor/my_yinner/clk_100_passthrough
-    SLICE_X11Y20         FDRE                                         r  audio_processor/my_yinner/f_out_reg[10]_replica/C
+                         net (fo=7454, routed)        1.567  1667.531    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X12Y10         FDRE                                         r  audio_processor/my_yinner/f_out_reg[10]_replica/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X11Y20         FDRE (Prop_fdre_C_Q)         0.456  1667.976 r  audio_processor/my_yinner/f_out_reg[10]_replica/Q
-                         net (fo=1, routed)           0.806  1668.782    audio_processor/my_yinner/Q[10]_repN
-    SLICE_X11Y20         LUT6 (Prop_lut6_I0_O)        0.124  1668.906 r  audio_processor/my_yinner/in_sphere1_i_14/O
-                         net (fo=2, routed)           0.414  1669.321    audio_processor/my_yinner/in_sphere1_i_14_n_0
-    SLICE_X11Y19         LUT3 (Prop_lut3_I1_O)        0.124  1669.445 r  audio_processor/my_yinner/in_sphere1_i_4/O
-                         net (fo=1, routed)           0.000  1669.445    mvg/in_sphere1__1_1[1]
-    SLICE_X11Y19         CARRY4 (Prop_carry4_S[1]_O[2])
-                                                      0.580  1670.025 r  mvg/in_sphere1_i_1/O[2]
-                         net (fo=58, routed)          0.811  1670.835    my_game/ball/in_sphere1__1_0[10]
-    DSP48_X0Y7           DSP48E1 (Prop_dsp48e1_A[10]_PCOUT[47])
-                                                      4.214  1675.049 r  my_game/ball/in_sphere1__0/PCOUT[47]
-                         net (fo=1, routed)           0.002  1675.051    my_game/ball/in_sphere1__0_n_106
-    DSP48_X0Y8           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
-                                                      1.518  1676.569 r  my_game/ball/in_sphere1__1/P[0]
-                         net (fo=2, routed)           0.650  1677.219    my_game/ball/in_sphere1__1_n_105
-    SLICE_X12Y21         LUT2 (Prop_lut2_I0_O)        0.124  1677.343 r  my_game/ball/tmds_out[1]_i_38/O
-                         net (fo=1, routed)           0.000  1677.343    my_game/ball/tmds_out[1]_i_38_n_0
-    SLICE_X12Y21         CARRY4 (Prop_carry4_S[1]_O[3])
-                                                      0.643  1677.986 r  my_game/ball/tmds_out_reg[1]_i_31/O[3]
-                         net (fo=1, routed)           0.609  1678.595    my_game/ball/tmds_out_reg[1]_i_31_n_4
-    SLICE_X12Y17         LUT2 (Prop_lut2_I1_O)        0.307  1678.902 r  my_game/ball/tmds_out[1]_i_19/O
-                         net (fo=1, routed)           0.000  1678.902    my_game/ball/tmds_out[1]_i_19_n_0
-    SLICE_X12Y17         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.376  1679.278 r  my_game/ball/tmds_out_reg[1]_i_12/CO[3]
-                         net (fo=1, routed)           0.000  1679.278    my_game/ball/tmds_out_reg[1]_i_12_n_0
-    SLICE_X12Y18         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323  1679.601 f  my_game/ball/tmds_out_reg[6]_i_21/O[1]
-                         net (fo=1, routed)           0.929  1680.530    my_game/ball/in_sphere0[21]
-    SLICE_X15Y18         LUT4 (Prop_lut4_I0_O)        0.306  1680.836 f  my_game/ball/tmds_out[6]_i_13/O
-                         net (fo=8, routed)           0.612  1681.448    my_game/ball/tmds_out[6]_i_13_n_0
-    SLICE_X15Y19         LUT6 (Prop_lut6_I5_O)        0.124  1681.572 r  my_game/ball/tmds_out[6]_i_4__0_comp_1/O
-                         net (fo=1, routed)           0.550  1682.123    my_game/tmds_out[6]_i_13_0_repN_1_alias
-    SLICE_X13Y16         LUT6 (Prop_lut6_I5_O)        0.124  1682.247 r  my_game/tmds_out[7]_i_4_comp/O
-                         net (fo=7, routed)           0.609  1682.856    mvg/red[4]
-    SLICE_X13Y16         LUT6 (Prop_lut6_I1_O)        0.124  1682.980 r  mvg/count[1]_i_7__0/O
-                         net (fo=4, routed)           0.651  1683.631    mvg/count[1]_i_7__0_n_0
-    SLICE_X15Y15         LUT3 (Prop_lut3_I1_O)        0.124  1683.755 r  mvg/count[1]_i_3_comp_1/O
-                         net (fo=1, routed)           0.783  1684.538    mvg/count[1]_i_3_n_0_repN_1
-    SLICE_X13Y13         LUT6 (Prop_lut6_I5_O)        0.124  1684.662 r  mvg/count[4]_i_16__0_comp/O
-                         net (fo=11, routed)          0.890  1685.552    mvg/count[4]_i_16__0_n_0
-    SLICE_X14Y11         LUT6 (Prop_lut6_I1_O)        0.124  1685.676 r  mvg/count[3]_i_10__1/O
-                         net (fo=13, routed)          0.689  1686.365    tmds_red/count_reg[3]_4
-    SLICE_X14Y10         LUT6 (Prop_lut6_I2_O)        0.124  1686.489 r  tmds_red/count[4]_i_12__1/O
-                         net (fo=1, routed)           0.571  1687.060    mvg/count_reg[4]_5
-    SLICE_X15Y11         LUT5 (Prop_lut5_I4_O)        0.124  1687.184 r  mvg/count[4]_i_3__1/O
-                         net (fo=1, routed)           0.433  1687.617    mvg/count[4]_i_3__1_n_0
-    SLICE_X15Y11         LUT6 (Prop_lut6_I0_O)        0.124  1687.741 r  mvg/count[4]_i_2__1_comp/O
-                         net (fo=1, routed)           0.000  1687.741    tmds_red/D[3]
-    SLICE_X15Y11         FDRE                                         r  tmds_red/count_reg[4]/D
+    SLICE_X12Y10         FDRE (Prop_fdre_C_Q)         0.518  1668.049 r  audio_processor/my_yinner/f_out_reg[10]_replica/Q
+                         net (fo=3, routed)           0.678  1668.727    audio_processor/my_yinner/Q[10]_repN
+    SLICE_X13Y10         LUT6 (Prop_lut6_I0_O)        0.124  1668.851 r  audio_processor/my_yinner/in_sphere1_i_14/O
+                         net (fo=2, routed)           0.716  1669.568    audio_processor/my_yinner/in_sphere1_i_14_n_0
+    SLICE_X12Y13         LUT3 (Prop_lut3_I1_O)        0.124  1669.692 r  audio_processor/my_yinner/in_sphere1_i_4/O
+                         net (fo=1, routed)           0.000  1669.692    mvg/in_sphere1__1_1[1]
+    SLICE_X12Y13         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.578  1670.270 r  mvg/in_sphere1_i_1/O[2]
+                         net (fo=58, routed)          0.793  1671.063    my_game/ball/in_sphere1__1_0[10]
+    DSP48_X0Y5           DSP48E1 (Prop_dsp48e1_A[10]_PCOUT[47])
+                                                      4.213  1675.276 r  my_game/ball/in_sphere1__0/PCOUT[47]
+                         net (fo=1, routed)           0.002  1675.278    my_game/ball/in_sphere1__0_n_106
+    DSP48_X0Y6           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
+                                                      1.518  1676.796 r  my_game/ball/in_sphere1__1/P[0]
+                         net (fo=2, routed)           0.773  1677.569    my_game/ball/in_sphere1__1_n_105
+    SLICE_X11Y12         LUT2 (Prop_lut2_I0_O)        0.124  1677.693 r  my_game/ball/tmds_out[1]_i_38/O
+                         net (fo=1, routed)           0.000  1677.693    my_game/ball/tmds_out[1]_i_38_n_0
+    SLICE_X11Y12         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550  1678.243 r  my_game/ball/tmds_out_reg[1]_i_31/CO[3]
+                         net (fo=1, routed)           0.000  1678.243    my_game/ball/tmds_out_reg[1]_i_31_n_0
+    SLICE_X11Y13         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334  1678.577 r  my_game/ball/tmds_out_reg[6]_i_96/O[1]
+                         net (fo=1, routed)           0.355  1678.932    my_game/ball/tmds_out_reg[6]_i_96_n_6
+    SLICE_X10Y13         LUT2 (Prop_lut2_I1_O)        0.303  1679.234 r  my_game/ball/tmds_out[6]_i_51/O
+                         net (fo=1, routed)           0.000  1679.234    my_game/ball/tmds_out[6]_i_51_n_0
+    SLICE_X10Y13         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533  1679.767 r  my_game/ball/tmds_out_reg[6]_i_21/CO[3]
+                         net (fo=1, routed)           0.000  1679.767    my_game/ball/tmds_out_reg[6]_i_21_n_0
+    SLICE_X10Y14         CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.315  1680.082 f  my_game/ball/tmds_out_reg[1]_i_11/O[3]
+                         net (fo=3, routed)           0.632  1680.714    my_game/ball/in_sphere0[27]
+    SLICE_X9Y15          LUT4 (Prop_lut4_I2_O)        0.307  1681.021 f  my_game/ball/tmds_out[6]_i_10/O
+                         net (fo=2, routed)           0.456  1681.477    my_game/ball/tmds_out[6]_i_10_n_0
+    SLICE_X10Y16         LUT6 (Prop_lut6_I3_O)        0.124  1681.601 f  my_game/ball/tmds_out[6]_i_4__0_comp_1/O
+                         net (fo=19, routed)          0.589  1682.190    my_game/ball_n_4
+    SLICE_X9Y13          LUT6 (Prop_lut6_I0_O)        0.124  1682.314 r  my_game/tmds_out[0]_i_2/O
+                         net (fo=12, routed)          0.784  1683.098    mvg/red[0]
+    SLICE_X9Y11          LUT6 (Prop_lut6_I0_O)        0.124  1683.222 r  mvg/tmds_out[3]_i_3/O
+                         net (fo=9, routed)           0.845  1684.067    mvg/tmds_out[3]_i_3_n_0
+    SLICE_X8Y8           LUT4 (Prop_lut4_I1_O)        0.124  1684.191 r  mvg/tmds_out[4]_i_2__0/O
+                         net (fo=7, routed)           0.855  1685.046    mvg/tmds_out[4]_i_2__0_n_0
+    SLICE_X11Y7          LUT6 (Prop_lut6_I1_O)        0.124  1685.170 r  mvg/count[4]_i_18__0/O
+                         net (fo=3, routed)           0.594  1685.763    mvg/count[4]_i_18__0_n_0
+    SLICE_X11Y7          LUT4 (Prop_lut4_I1_O)        0.124  1685.887 r  mvg/count[4]_i_20/O
+                         net (fo=3, routed)           0.673  1686.560    mvg/count[4]_i_20_n_0
+    SLICE_X11Y7          LUT6 (Prop_lut6_I5_O)        0.124  1686.684 r  mvg/count[4]_i_15__1/O
+                         net (fo=1, routed)           0.440  1687.125    mvg/count[4]_i_15__1_n_0
+    SLICE_X11Y9          LUT4 (Prop_lut4_I3_O)        0.124  1687.249 r  mvg/count[4]_i_5__0/O
+                         net (fo=1, routed)           0.571  1687.820    mvg/count[4]_i_5__0_n_0
+    SLICE_X11Y10         LUT6 (Prop_lut6_I2_O)        0.124  1687.944 r  mvg/count[4]_i_2__1/O
+                         net (fo=1, routed)           0.000  1687.944    tmds_red/D[3]
+    SLICE_X11Y10         FDRE                                         r  tmds_red/count_reg[4]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_cw_hdmi rise edge)
@@ -107,21 +110,21 @@ Slack (VIOLATED) :        -20.780ns  (required time - arrival time)
                                                      -7.753  1664.831 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.582  1666.413    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  1666.504 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7451, routed)        1.457  1667.962    wizard_hdmi/CLK
+                         net (fo=7454, routed)        1.457  1667.962    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -3.129  1664.832 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.581  1666.413    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091  1666.504 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, routed)        1.447  1667.951    tmds_red/clk_pixel
-    SLICE_X15Y11         FDRE                                         r  tmds_red/count_reg[4]/C
-                         clock pessimism             -0.507  1667.445    
-                         clock uncertainty           -0.513  1666.932    
-    SLICE_X15Y11         FDRE (Setup_fdre_C_D)        0.029  1666.961    tmds_red/count_reg[4]
+                         net (fo=2869, routed)        1.449  1667.953    tmds_red/clk_pixel
+    SLICE_X11Y10         FDRE                                         r  tmds_red/count_reg[4]/C
+                         clock pessimism             -0.507  1667.447    
+                         clock uncertainty           -0.513  1666.934    
+    SLICE_X11Y10         FDRE (Setup_fdre_C_D)        0.031  1666.965    tmds_red/count_reg[4]
   -------------------------------------------------------------------
-                         required time                       1666.961    
-                         arrival time                       -1687.741    
+                         required time                       1666.965    
+                         arrival time                       -1687.944    
   -------------------------------------------------------------------
-                         slack                                -20.780    
+                         slack                                -20.979    
 
 
 

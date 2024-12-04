@@ -40,7 +40,7 @@ module block_sprite #(
   logic [8:0] gap_pos;       // Declare `gap_pos` as a 9-bit signal
   logic [31:0] shifted_val;  // Temporary signal to store the shifted value
   assign gap_height = gap_pos + Y_HEIGHT;
-  assign shifted_val = freq_in >> 4;  // Perform the shift first
+  assign shifted_val = freq_in >> 2;  // Perform the shift first
   assign gap_pos = shifted_val[8:0];
   logic in_top_block, in_bottom_block;
   assign in_top_block = ((hcount_in >= x_in && hcount_in < (x_in + WIDTH)) &&

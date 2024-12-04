@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Tue Dec  3 22:46:48 2024
-| Host         : eecs-digital-27 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Wed Dec  4 10:48:26 2024
+| Host         : eecs-digital-11 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing_summary -file obj/post_synth_timing_summary.rpt
 | Design       : top_level
 | Device       : 7s50-csga324
@@ -152,7 +152,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-    -22.472   -22440.100                   2447                20646       -0.443      -20.825                     48                20646        0.538        0.000                       0                 10324  
+    -22.472   -22391.238                   2412                20650       -0.443      -20.825                     48                20650        0.538        0.000                       0                 10323  
 
 
 Timing constraints are not met.
@@ -184,7 +184,7 @@ gclk                   {0.000 4.000}        10.000          100.000
 Clock                      WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----                      -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                     2.000        0.000                       0                     1  
-  clk_100_cw_fast          -11.491   -21280.789                   2324                14963        0.132        0.000                      0                14963        3.000        0.000                       0                  7445  
+  clk_100_cw_fast          -11.491   -21231.926                   2289                14967        0.132        0.000                      0                14967        3.000        0.000                       0                  7444  
     clk_pixel_cw_hdmi       -8.550     -297.240                     42                 5635        0.003        0.000                      0                 5635        6.234        0.000                       0                  2858  
     clk_tmds_cw_hdmi                                                                                                                                                     0.538        0.000                       0                     8  
     clkfbout_cw_hdmi                                                                                                                                                    47.845        0.000                       0                     3  
@@ -248,7 +248,7 @@ High Pulse Width  Slow    PLLE2_ADV/CLKIN1  n/a            2.000         4.000  
 From Clock:  clk_100_cw_fast
   To Clock:  clk_100_cw_fast
 
-Setup :         2324  Failing Endpoints,  Worst Slack      -11.491ns,  Total Violation   -21280.788ns
+Setup :         2289  Failing Endpoints,  Worst Slack      -11.491ns,  Total Violation   -21231.926ns
 Hold  :            0  Failing Endpoints,  Worst Slack        0.132ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        3.000ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
@@ -287,7 +287,7 @@ Slack (VIOLATED) :        -11.491ns  (required time - arrival time)
                                                      -6.612    -4.587 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -3.788    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.096    -3.692 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.584    -3.108    audio_processor/my_yinner/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.584    -3.108    audio_processor/my_yinner/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/sample_counter_reg[3]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.456    -2.652 r  audio_processor/my_yinner/sample_counter_reg[3]/Q
@@ -358,7 +358,7 @@ Slack (VIOLATED) :        -11.491ns  (required time - arrival time)
                                                      -5.893     5.916 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760     6.676    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.091     6.767 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.439     7.206    audio_processor/my_yinner/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.439     7.206    audio_processor/my_yinner/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/df_buffer_reg[0][27]/C
                          clock pessimism             -0.459     6.747    
                          clock uncertainty           -0.074     6.674    
@@ -402,7 +402,7 @@ Slack (MET) :             0.132ns  (arrival time - required time)
                                                      -1.719    -1.397 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.059    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.026    -1.033 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.114    -0.919    audio_processor/my_yinner/final_divider/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.114    -0.919    audio_processor/my_yinner/final_divider/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/final_divider/dividend_reg[27]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.141    -0.778 f  audio_processor/my_yinner/final_divider/dividend_reg[27]/Q
@@ -425,7 +425,7 @@ Slack (MET) :             0.132ns  (arrival time - required time)
                                                      -1.885    -1.230 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -0.875    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.029    -0.846 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.259    -0.587    audio_processor/my_yinner/final_divider/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.259    -0.587    audio_processor/my_yinner/final_divider/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/final_divider/dividend_reg[27]/C
                          clock pessimism             -0.187    -0.774    
                          FDRE (Hold_fdre_C_D)         0.105    -0.669    audio_processor/my_yinner/final_divider/dividend_reg[27]
@@ -497,7 +497,7 @@ Slack (VIOLATED) :        -8.550ns  (required time - arrival time)
                                                      -6.612    -4.587 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -3.788    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.096    -3.692 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.584    -3.108    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.584    -3.108    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.480    -4.587 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -3.788    wizard_hdmi/clk_pixel_cw_hdmi
@@ -567,7 +567,7 @@ Slack (VIOLATED) :        -8.550ns  (required time - arrival time)
                                                      -5.893     9.384 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    10.144    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.091    10.235 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.439    10.674    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.439    10.674    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.290     9.384 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    10.144    wizard_hdmi/clk_pixel_cw_hdmi
@@ -616,7 +616,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -1.719    -1.397 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.059    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.026    -1.033 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.114    -0.919    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.114    -0.919    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -0.477    -1.397 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.059    wizard_hdmi/clk_pixel_cw_hdmi
@@ -641,7 +641,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -1.885    -1.230 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -0.875    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.029    -0.846 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.259    -0.587    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.259    -0.587    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -0.643    -1.230 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -0.875    wizard_hdmi/clk_pixel_cw_hdmi
@@ -856,7 +856,7 @@ Slack (VIOLATED) :        -22.472ns  (required time - arrival time)
                                                      -6.612  1665.413 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800  1666.212    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.096  1666.308 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.584  1666.892    audio_processor/my_yinner/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.584  1666.892    audio_processor/my_yinner/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/f_out_reg[10]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.456  1667.348 r  audio_processor/my_yinner/f_out_reg[10]/Q
@@ -920,7 +920,7 @@ Slack (VIOLATED) :        -22.472ns  (required time - arrival time)
                                                      -5.893  1665.950 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760  1666.710    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.091  1666.801 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.439  1667.240    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.439  1667.240    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.290  1665.950 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760  1666.710    wizard_hdmi/clk_pixel_cw_hdmi
@@ -973,7 +973,7 @@ Slack (VIOLATED) :        -0.443ns  (arrival time - required time)
                                                      -1.719    -1.397 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.059    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.026    -1.033 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.114    -0.919    audio_processor/my_yinner/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.114    -0.919    audio_processor/my_yinner/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/f_out_reg[15]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.141    -0.778 r  audio_processor/my_yinner/f_out_reg[15]/Q
@@ -991,7 +991,7 @@ Slack (VIOLATED) :        -0.443ns  (arrival time - required time)
                                                      -1.885    -1.230 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -0.875    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.029    -0.846 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.259    -0.587    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.259    -0.587    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -0.643    -1.230 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -0.875    wizard_hdmi/clk_pixel_cw_hdmi

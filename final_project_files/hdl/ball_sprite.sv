@@ -13,7 +13,7 @@ module ball_sprite #(
   logic [8:0] ball_pos;       // Declare `gap_pos` as a 9-bit signal
   logic [31:0] shifted_val;  // Temporary signal to store the shifted value
   
-  assign shifted_val = freq_in >> 4;  // Perform the shift first
+  assign shifted_val = freq_in >> 2;  // Perform the shift first
   assign ball_pos = shifted_val[8:0];
 
   // Calculate the circle's center

@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Tue Dec  3 22:46:49 2024
-| Host         : eecs-digital-27 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Wed Dec  4 10:48:26 2024
+| Host         : eecs-digital-11 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing -file obj/post_synth_timing.rpt
 | Design       : top_level
 | Device       : 7s50-csga324
@@ -43,7 +43,7 @@ Slack (VIOLATED) :        -22.472ns  (required time - arrival time)
                                                      -6.612  1665.413 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800  1666.212    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.096  1666.308 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.584  1666.892    audio_processor/my_yinner/clk_100_passthrough
+                         net (fo=7443, unplaced)      0.584  1666.892    audio_processor/my_yinner/clk_100_passthrough
                          FDRE                                         r  audio_processor/my_yinner/f_out_reg[10]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.456  1667.348 r  audio_processor/my_yinner/f_out_reg[10]/Q
@@ -107,7 +107,7 @@ Slack (VIOLATED) :        -22.472ns  (required time - arrival time)
                                                      -5.893  1665.950 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760  1666.710    wizard_migcam/clk_100_cw_fast
                          BUFG (Prop_bufg_I_O)         0.091  1666.801 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7444, unplaced)      0.439  1667.240    wizard_hdmi/CLK
+                         net (fo=7443, unplaced)      0.439  1667.240    wizard_hdmi/CLK
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.290  1665.950 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760  1666.710    wizard_hdmi/clk_pixel_cw_hdmi
