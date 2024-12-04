@@ -70,7 +70,7 @@ module block_sprite #(
           green_out = 8'hFF;
           blue_out = 8'hFF;
       end else begin
-          red_out = 8'hFF;      // red pixel (background)
+          red_out = 0;      // red pixel (background)
           green_out = 0;
           blue_out = 0;
       end
