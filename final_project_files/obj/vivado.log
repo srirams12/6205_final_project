@@ -91,31 +91,6 @@ INFO: [Device 21-403] Loading part xc7s50csga324-1
 INFO: [Device 21-9227] Part: xc7s50csga324-1 does not have CEAM library.
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-<<<<<<< HEAD
-INFO: [Synth 8-7075] Helper process launched with PID 2732
----------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2142.797 ; gain = 412.746 ; free physical = 12040 ; free virtual = 17629
----------------------------------------------------------------------------------
-WARNING: [Synth 8-11121] redeclaration of ANSI port 'ram_addr' is not allowed [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:49]
-WARNING: [Synth 8-11121] redeclaration of ANSI port 'ram_din' is not allowed [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:50]
-WARNING: [Synth 8-11121] redeclaration of ANSI port 'ram_dout' is not allowed [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:51]
-WARNING: [Synth 8-11121] redeclaration of ANSI port 'ram_we' is not allowed [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:52]
-WARNING: [Synth 8-11121] redeclaration of ANSI port 'ram_en' is not allowed [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:53]
-ERROR: [Synth 8-36] 'write_en' is not declared [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:95]
-ERROR: [Synth 8-36] 'WRITE_BLOCK' is not declared [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:116]
-INFO: [Synth 8-10285] module 'sd_access' is ignored due to previous errors [/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv:221]
-INFO: [Synth 8-9084] Verilog file '/home/fpga/worker_place/temp/7414ba0c40af4c68b250799a2eb4acbe/final_project_files/hdl/sd_access.sv' ignored due to errors
-ERROR: [Synth 8-439] module 'top_level' not found
----------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 2218.766 ; gain = 488.715 ; free physical = 11949 ; free virtual = 17539
----------------------------------------------------------------------------------
-RTL Elaboration failed
-INFO: [Common 17-83] Releasing license: Synthesis
-9 Infos, 5 Warnings, 0 Critical Warnings and 4 Errors encountered.
-synth_design failed
-ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
-INFO: [Common 17-206] Exiting Vivado at Wed Dec  4 12:14:02 2024...
-=======
 INFO: [Synth 8-7075] Helper process launched with PID 5974
 ---------------------------------------------------------------------------------
 Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2142.680 ; gain = 412.746 ; free physical = 27616 ; free virtual = 37555
@@ -2177,4 +2152,3 @@ INFO: [Common 17-83] Releasing license: Implementation
 write_bitstream completed successfully
 write_bitstream: Time (s): cpu = 00:00:12 ; elapsed = 00:00:15 . Memory (MB): peak = 3109.250 ; gain = 142.699 ; free physical = 27121 ; free virtual = 37101
 INFO: [Common 17-206] Exiting Vivado at Wed Dec  4 12:17:48 2024...
->>>>>>> 686471d (trying to fix timing)
