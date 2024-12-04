@@ -39,9 +39,9 @@ module ball_sprite #(
   // Output the color if the pixel is part of the sprite
   always_comb begin
     if (in_sphere) begin
-      red_out = {dynamic_color[23:20], 0'h0};
-      green_out = {dynamic_color[15:12], 0'h0};
-      blue_out = {dynamic_color[7:4], 0'h0};
+      red_out = {dynamic_color[19:16], 0'h0};
+      green_out = {dynamic_color[11:8], 0'h0};
+      blue_out = {dynamic_color[3:0], 0'h0};
     end else begin
       red_out = 0;
       green_out = 0;

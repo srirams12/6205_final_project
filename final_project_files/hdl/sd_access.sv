@@ -2,13 +2,11 @@ module sd_access #(
     parameter RAM_WIDTH = 18,     // Match RAM data width
     parameter RAM_DEPTH = 1024    // Match RAM depth
 )(
-    input wire clk,               // System clock
-    input wire rst,               // Reset signal
+    input wire clk,               //  clock
+    input wire rst,               // Reset 
     // Control interface
     input wire [31:0] addr_in,    // Address for read/write operations (sector address)
-    input wire [511:0] data_in,   // Data to write to SD card (512 bits for 1 sector)
     input wire read_en,           // Start a read operation
-    input wire write_en,          // Start a write operation
     output logic [511:0] data_out,  // Data read from SD card
     output logic done,              // High when operation is complete
     output logic error,             // High if an error occurs
@@ -33,7 +31,6 @@ module sd_access #(
         SEND_CMD,
         WAIT_RESP,
         READ_BLOCK,
-        WRITE_BLOCK,
         WAIT_SPI,
         DONE,
         ERROR
@@ -95,8 +92,6 @@ module sd_access #(
             IDLE: begin
                 if (read_en)
                     next_state = INIT;  // Start read operation
-                else if (write_en)
-                    next_state = INIT;  // Start write operation
             end
 
             INIT: begin
@@ -127,11 +122,6 @@ module sd_access #(
                     next_state = DONE;
             end
 
-            WRITE_BLOCK: begin
-                if (byte_counter == 511) // Once 512 bytes are written, finish
-                    next_state = DONE;
-            end
-
             DONE: begin
                 next_state = IDLE;  // Go back to idle
             end
@@ -155,7 +145,6 @@ module sd_access #(
             error <= 0;
             cmd_sent <= 0;
             read_active <= 0;
-            write_active <= 0;
             byte_counter <= 0;
             ram_we <= 0;
             ram_en <= 0;
@@ -166,7 +155,6 @@ module sd_access #(
                     error <= 0;
                     cmd_sent <= 0;
                     read_active <= read_en;
-                    write_active <= write_en;
                     byte_counter <= 0;
                 end
 
@@ -192,8 +180,6 @@ module sd_access #(
                             // Valid response received
                             if (read_active)
                                 byte_counter <= 0; // Prepare for read
-                            else if (write_active)
-                                byte_counter <= 0; // Prepare for write
                         end else begin
                             error <= 1; // Invalid response
                         end
@@ -217,20 +203,6 @@ module sd_access #(
                     end
                 end
 
-                WRITE_BLOCK: begin
-                    // Write 512 bytes from RAM to SD card
-                    if (spi_done) begin
-                        spi_data_in <= sector_buffer[byte_counter * 8 +: 8];
-                        byte_counter <= byte_counter + 1;
-
-                        // Load data from RAM every RAM_WIDTH bytes
-                        if (byte_counter % (RAM_WIDTH / 8) == 0) begin
-                            ram_addr <= ram_addr + 1;
-                            ram_we <= 0;
-                            sector_buffer[byte_counter * 8 +: RAM_WIDTH] <= ram_dout;
-                        end
-                    end
-                end
 
                 DONE: begin
                     done <= 1;
