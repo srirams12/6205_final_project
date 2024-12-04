@@ -68,7 +68,7 @@ module top_level
 
 
     // 100hz trigger for the yin
-    localparam CYCLES_PER_TRIGGER_YIN = 1000000; // MUST CHANGE
+    localparam CYCLES_PER_TRIGGER_YIN = 50000000;
     logic [31:0]        trigger_count_yin;
     logic               yin_trigger;
     counter counter_100hz_trigger (
@@ -132,7 +132,7 @@ module top_level
     logic [6:0] ss_c; 
     seven_segment_controller mssc(.clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .val_in(sw),
+        .val_in(f0),
         .cat_out(ss_c),
         .an_out({ss0_an, ss1_an})
     );

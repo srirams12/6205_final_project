@@ -84,8 +84,8 @@ sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 # sine_wave = np.clip(sine_wave, -255, 255)
 
 # singing C
-sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
-signal = signal[20000:20501]
+sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
+signal = signal[30000:30500]
 # step response
 step = [127]
 for i in range(255):
@@ -123,30 +123,29 @@ async def test_a(dut):
     dut.start_computation.value = 0
 
     # # get values out of buffer
-    # filtered = [convert_to_signed(int(i)) for i in dut.sig_buffer.value]
-    # plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
-    # plt.show()
+    filtered = [int(i) for i in dut.my_yinner.sig_buffer.value]
+    plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
+    plt.show()
 
     # # wait for computation to be done
     # # await RisingEdge(dut.f_out_valid)
-    await ClockCycles(dut.clk_in, 50000)
+    while dut.my_yinner.state.value != 2:
+        await ClockCycles(dut.clk_in, 1)
+    
+    taus = []
+    sum_df = []
+    df_zeros = []
+    prods = []
+    for tau in range(80):
+        await ClockCycles(dut.clk_in, 1)
+        taus.append(tau)
+        sum_df.append(int(dut.my_yinner.diff_sum.value))
+        df_zeros.append(int(dut.my_yinner.sum_times_point_one.value))
+        prods.append(int(dut.my_yinner.product.value))
 
-    # taus = []
-    # sum_df = []
-    # df_zeros = []
-    # prods = []
-    # for tau in range(80):
-    #     await ClockCycles(dut.clk_in, 1)
-    #     taus.append(tau)
-    #     sum_df.append(int(dut.diff_sum.value))
-    #     df_zeros.append(int(dut.sum_times_point_one.value))
-    #     prods.append(int(dut.product.value))
 
-    # dif_func = [int(i) for i in dut.df_buffer.value]
-    # print(dif_func.index(min(dif_func)))
-    # print(f'{dif_func[:10]=}')
+    dif_func = [int(i) for i in dut.my_yinner.df_buffer.value]
 
-    # print(sum_df[:10])
     # cmndf = [dif_func[i] * i / sum_df[i] for i in range(2, 80)]
 
 
@@ -156,16 +155,19 @@ async def test_a(dut):
 
     # actual_dif_func = difference_function(np.array(filtered), 80)
 
-    # plt.plot([i for i in range(len(dif_func))], dif_func)
+    # plt.plot([i for i in range(len(cmndf))], cmndf)
     # plt.show()
 
     # print(f'{cmndf[20]=}')
 
     # print(f'{[sum_df[i]/df_zeros[i] for i in range(3, 10)]=}')
-    # plt.plot(taus[0:], df_zeros)
-    # plt.plot(taus[0:], prods)
+    plt.plot(taus[0:], df_zeros)
+    plt.plot(taus[0:], prods)
 
-    # plt.show()
+    plt.show()
+
+    await ClockCycles(dut.clk_in, 500)
+
 
 
 

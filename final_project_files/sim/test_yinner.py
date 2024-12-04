@@ -84,7 +84,7 @@ sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 # sine_wave = np.clip(sine_wave, -255, 255)
 
 # singing C
-sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
+sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
 # step response
 step = [127]
 for i in range(255):
@@ -168,11 +168,6 @@ async def test_a(dut):
 
     # plt.plot([i for i in range(len(actual_dif_func))], actual_dif_func)
     # plt.show()
-
-    
-
-
-
 
 def spi_con_runner():
     """Simulate the counter using the Python runner."""

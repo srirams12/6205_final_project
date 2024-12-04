@@ -28,7 +28,7 @@ bandpass bandpasser (
 yinner my_yinner (
     .clk_in(clk_in),
     .rst_in(rst_in),
-    .sig_in(bandpass_out+255), // signal may need to be positive
+    .sig_in(bandpass_out+9'd255), // signal may need to be positive
     .sig_in_valid(bandpass_valid),
     .start_computation(start_computation),
     .f_out(f_out),

@@ -40,7 +40,11 @@ module yinner #(
     logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE) + $clog2(TAU_MAX) + 1: 0] product;
     
     logic [WIDTH - 1:0] ZERO_POINT_ONE;
-    assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0001_1001_1001_1001;
+    // assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0001_1001_1001_1001;
+    // assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0010_0110_0110_0110; // 0.15 not 0.1
+    assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0100_0000_0000_0000; // 0.25 not 0.1
+
+
     logic [$clog2(TAU_MAX) : 0] tau_final;
 
     // logic for indexing math
