@@ -55,7 +55,9 @@ module top_level
     );
 
     // 8kHz trigger for the microphone
-    localparam CYCLES_PER_TRIGGER_MIC = 12500;
+    // localparam CYCLES_PER_TRIGGER_MIC = 12500;
+    localparam CYCLES_PER_TRIGGER_MIC = 6250;
+
     logic [31:0]        trigger_count_mic;
     logic               spi_trigger;
     counter counter_8khz_trigger (
@@ -68,7 +70,7 @@ module top_level
 
 
     // 100hz trigger for the yin
-    localparam CYCLES_PER_TRIGGER_YIN = 50000000;
+    localparam CYCLES_PER_TRIGGER_YIN = 10000000;
     logic [31:0]        trigger_count_yin;
     logic               yin_trigger;
     counter counter_100hz_trigger (
@@ -81,14 +83,14 @@ module top_level
 
 
     // SPI Controller on our ADC
-    parameter ADC_DATA_WIDTH = 17; //MUST CHANGE
-    parameter ADC_DATA_CLK_PERIOD = 50; //MUST CHANGE
+    parameter ADC_DATA_WIDTH = 17;
+    parameter ADC_DATA_CLK_PERIOD = 50;
 
     // SPI interface controls
     logic [ADC_DATA_WIDTH-1:0] spi_write_data;
     logic [ADC_DATA_WIDTH-1:0] spi_read_data;
     logic                      spi_read_data_valid;
-    assign spi_write_data = 17'b11111_0000_0000_0000; // MUST CHANGE
+    assign spi_write_data = 17'b11111_0000_0000_0000;
 
     spi_con #(  
         .DATA_WIDTH(ADC_DATA_WIDTH),
@@ -128,11 +130,18 @@ module top_level
         .f_out_valid(f0_valid)
     );
 
+    logic [15:0] note_in;
+    always_ff @(posedge clk_pixel) begin
+        if (f0_valid && f0[15:0] != 8000 && f0 != 0 && f0 != 16000) begin
+            note_in <= f0[15:0];
+        end
+    end
+
     // SEVEN SEGMENT CONTROLLER
     logic [6:0] ss_c; 
     seven_segment_controller mssc(.clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .val_in(f0),
+        .val_in(note_in),
         .cat_out(ss_c),
         .an_out({ss0_an, ss1_an})
     );
@@ -171,7 +180,7 @@ module top_level
     note_game my_game (
         .pixel_clk_in(clk_pixel),
         .rst_in(game_rst),
-        .note_in(f0[15:0]),
+        .note_in(note_in),
         .true_note_in(sw[15:8]),
         .nf_in(new_frame),
         .hcount_in(hcount),

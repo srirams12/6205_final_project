@@ -110,8 +110,6 @@ module sd_access #(
                 if (spi_done && spi_data_out == 8'h00) begin
                     if (read_active)
                         next_state = READ_BLOCK;
-                    else if (write_active)
-                        next_state = WRITE_BLOCK;
                 end else if (spi_done && spi_data_out != 8'h00) begin
                     next_state = ERROR;  // Handle invalid response
                 end

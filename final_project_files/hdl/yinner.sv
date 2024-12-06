@@ -40,7 +40,7 @@ module yinner #(
 
     logic [4*SIG_WIDTH + 2*$clog2(WINDOW_SIZE) + $clog2(TAU_MAX)+40: 0] sum_times_point_one;
     logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE) + $clog2(TAU_MAX) + 1: 0] product;
-    
+    logic [2*SIG_WIDTH + $clog2(WINDOW_SIZE): 0] df_buff_ind_tau;
     logic [WIDTH - 1:0] ZERO_POINT_ONE;
     // assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0001_1001_1001_1001;
     // assign ZERO_POINT_ONE = 32'b0000_0000_0000_0000_0010_0110_0110_0110; // 0.15 not 0.1
@@ -65,7 +65,7 @@ module yinner #(
     logic divide_busy;
     logic divide_valid;
     logic [WIDTH - 1:0] EIGHT_THOUSAND;
-    assign EIGHT_THOUSAND = 32'h1F40_0000;
+    assign EIGHT_THOUSAND = 32'h3E80_0000; //32'h1F40_0000; // 16kHz
     logic [WIDTH - 1:0] f0;
     divider #(  
         .WIDTH(WIDTH)
@@ -108,6 +108,7 @@ module yinner #(
 
             sum_times_point_one <= 0;
             product <= 0;
+            df_buff_ind_tau <= 0;
 
             diff_sum <= 0;
 
@@ -171,10 +172,12 @@ module yinner #(
                         // diff_sum <= df_buffer[tau];
                         diff_sum <= 0;
                         tau <= tau + 1;
+                        df_buff_ind_tau <= df_buffer[1];
                     end else begin
                         if (tau <= TAU_MAX) begin
                             sum_times_point_one <= ((diff_sum + df_buffer[tau]) * ZERO_POINT_ONE) >> DEC_WIDTH;
-                            product <= df_buffer[tau] * tau;
+                            product <= df_buff_ind_tau * tau;
+                            df_buff_ind_tau <= df_buffer[tau + 1];
                             if (product < sum_times_point_one) begin
                                 // we've found our lag that works
                                 tau_final <= tau;
