@@ -7,6 +7,7 @@ module note_game (
     input wire nf_in,
     input wire [10:0] hcount_in,
     input wire [9:0] vcount_in,
+    input wire [15:0] sw,
     output logic [7:0] red_out,
     output logic [7:0] green_out,
     output logic [7:0] blue_out,
@@ -58,7 +59,6 @@ module note_game (
     parameter BOUNCE_DECAY_RATE = 2; // Bounce decays by dividing height by this factor
     parameter MAX_BOUNCE_DISTANCE = 16; // Maximum height of a bounce
     logic [12:0] wall_x[2:0];
-    logic [15:0] notes_in[WALL_COUNT-1:0];
     logic trigger_bounce[WALL_COUNT-1:0];
     logic [9:0] bounce_offset[WALL_COUNT-1:0]; // Bounce offset for each wall
     logic [1:0] wall_state[WALL_COUNT-1:0]; // State of each wall: MOVE, BOUNCE, or DECAY
@@ -67,6 +67,24 @@ module note_game (
     localparam MOVE  = 2'b00; // Wall moving left
     localparam BOUNCE = 2'b01; // Wall bouncing
     localparam STOP = 2'b10; // Wall bounce decaying
+
+    logic [15:0] song_note_frequencies [32-1:0];
+    always_comb begin
+        song_note_frequencies[0] = 262;
+        song_note_frequencies[1] = 440;
+        song_note_frequencies[2] = 622;
+        song_note_frequencies[3] = 349;
+        song_note_frequencies[4] = 392;
+        song_note_frequencies[5] = 440;
+        song_note_frequencies[6] = 494;
+        song_note_frequencies[7] = 523;
+    end
+    logic [15:0] true_note_frequencies [WALL_COUNT-1:0];
+    logic [7:0] true_note_codes [WALL_COUNT-1:0];
+    logic [5:0] song_note_counter [WALL_COUNT-1:0];
+
+    logic [12:0] road_x;
+
     //WALL POSITIONING
     always @(posedge pixel_clk_in) begin
         if (rst_in) begin
@@ -76,23 +94,32 @@ module note_game (
                 bounce_offset[i] <= 0;     // No initial bounce
                 wall_state[i] <= MOVE;     // Start in MOVE state
                 trigger_bounce[i] <= 0; // Default to no bounce
-                notes_in[i] <= note_in;
+                // true_note_frequencies[i] <= song_note_frequencies[i];
+                song_note_counter[i] <= i;
             end
+            road_x <= 128;
         end else if (nf_in) begin
             // Update logic for each wall
             logic trigger_stop[WALL_COUNT]; // Track which walls should stop
             for (int i = 0; i < WALL_COUNT; i++) begin
                 trigger_stop[i] = 0; // Default: no wall stops
             end
+
+            if (!freeze_screen && wall_state[0] == MOVE && wall_state[1] == MOVE && wall_state[2] == MOVE) begin
+                road_x <= road_x == 0 ? 128 : road_x - 1;
+            end
+
             for (int i = 0; i < WALL_COUNT; i = i + 1) begin
                 case (wall_state[i])
                     MOVE: begin
                         // Normal wall movement
                         if (!freeze_screen) begin
-                            note_req <=0;                            
+                            
+                            // note_req <=0;                            
                             if (wall_x[i] == 0) begin
                                 wall_x[i] <= SCREEN_WIDTH; // Reset wall position
-                                notes_in[i] <= note_in;
+                                // notes_in[i] <= note_in;
+                                song_note_counter[i] <= song_note_counter[i] + 3;
                                 note_req <=1;                            
                             end else begin
                                 note_req <=0;                            
@@ -101,7 +128,7 @@ module note_game (
         
                             // Check for collision with the ball
                             if ((wall_x[i] == ball_x)) begin
-                                if ((ball_y < gap_y[i] - 5) || (ball_y > gap_y[i] + 45)) begin
+                                if ((ball_y < gap_y[i] - 15) || (ball_y > gap_y[i] + 15)) begin
                                     // Ball is not in the gap; trigger bounce
                                     wall_state[i] <= BOUNCE;
                                     bounce_offset[i] <= MAX_BOUNCE_DISTANCE;
@@ -155,6 +182,29 @@ module note_game (
     logic [7:0] wall1_r, wall1_g, wall1_b;
     logic [7:0] wall2_r, wall2_g, wall2_b;
     logic [7:0] wall3_r, wall3_g, wall3_b;
+    logic [7:0] back_r, back_g, back_b;
+
+
+    always_comb begin
+        for (int i = 0; i < WALL_COUNT; i = i + 1) begin
+            true_note_frequencies[i] = song_note_frequencies[song_note_counter[i]];
+        end
+    end
+
+    FrequencyToNote wall1_note (
+        .frequency(true_note_frequencies[0]),
+        .note_code(true_note_codes[0])
+    );
+
+    FrequencyToNote wall2_note (
+        .frequency(true_note_frequencies[1]),
+        .note_code(true_note_codes[1])
+    );
+
+    FrequencyToNote wall3_note (
+        .frequency(true_note_frequencies[2]),
+        .note_code(true_note_codes[2])
+    );
 
 
     block_sprite #()
@@ -164,8 +214,8 @@ module note_game (
         .hcount_in(hcount_in),
         .vcount_in(vcount_in),
         .x_in(wall_x[0]),
-        .freq_in(notes_in[0]),
-        .true_note(8'b01101000),
+        .freq_in(true_note_frequencies[0]),
+        .true_note(sw[0] ? 8'b010_01_011 : true_note_codes[0]),
         .red_out(wall1_r),
         .green_out(wall1_g),
         .blue_out(wall1_b),
@@ -178,8 +228,8 @@ module note_game (
         .hcount_in(hcount_in),
         .vcount_in(vcount_in),
         .x_in(wall_x[1]),
-        .freq_in(notes_in[1]),
-        .true_note(8'b00010010),
+        .freq_in(true_note_frequencies[1] ),
+        .true_note(sw[0] ? 8'b000_01_100 : true_note_codes[1]),
         .red_out(wall2_r),
         .green_out(wall2_g),
         .blue_out(wall2_b),
@@ -191,8 +241,8 @@ module note_game (
         .hcount_in(hcount_in),
         .vcount_in(vcount_in),
         .x_in(wall_x[2]),
-        .freq_in(notes_in[2]),
-        .true_note(8'b01101000),
+        .freq_in(true_note_frequencies[2]),
+        .true_note(sw[0] ? 8'b100_10_101 : true_note_codes[2]),
         .red_out(wall3_r),
         .green_out(wall3_g),
         .blue_out(wall3_b),
@@ -209,9 +259,37 @@ module note_game (
         .blue_out(ball_b),
         .ball_y(ball_y),
         .ball_x(ball_x));
+    
+    background #()
+    back(
+        .hcount_in(hcount_in),
+        .vcount_in(vcount_in),
+        .x_in(road_x),
+        .red_out(back_r),
+        .green_out(back_g),
+        .blue_out(back_b));
+    always_comb begin
+        red_out = wall1_r | wall2_r | wall3_r | ball_r | back_r;
+        green_out = wall1_g | wall2_g | wall3_g | ball_g | back_g;
+        blue_out = wall1_b | wall2_b | wall3_b | ball_b | back_b;
 
-    assign red_out = wall1_r | wall2_r | wall3_r | ball_r;
-    assign green_out = wall1_g | wall2_g | wall3_g | ball_g;
-    assign blue_out = wall1_b | wall2_b | wall3_b | ball_b;
+        if (wall3_r || wall3_g|| wall3_b) begin
+            red_out = wall3_r;
+            green_out = wall3_g;
+            blue_out = wall3_b;
+        end else if (wall2_r || wall2_g|| wall2_b) begin
+            red_out = wall2_r;
+            green_out = wall2_g;
+            blue_out = wall2_b;
+        end else if (wall1_r || wall1_g|| wall1_b) begin
+            red_out = wall1_r;
+            green_out = wall1_g;
+            blue_out = wall1_b;
+        end else if (ball_r || ball_g|| ball_b) begin
+            red_out = ball_r;
+            green_out = ball_g;
+            blue_out = ball_b;
+        end
+    end
 
 endmodule

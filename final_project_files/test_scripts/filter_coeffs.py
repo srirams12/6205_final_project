@@ -5,7 +5,7 @@ import numpy as np
 
 from yin_test import yin
 
-sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/test_scripts/c_sing.wav')
+sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/test_scripts/c_sing.wav')
 
 def decimal_to_fixed_point_hex(decimal_number):
     """
@@ -55,11 +55,22 @@ def decimal_to_fixed_point_hex(decimal_number):
 #         69.8176229 , -65.65256167,  43.4962858 , -20.04826803,
 #          6.15172796,  -1.13461586,   0.09548109]
 
-'''3rd order'''
-b=[ 0.02437105,  0.        , -0.07311316,  0.        ,  0.07311316,
-        0.        , -0.02437105]
-a=[ 1.        , -4.4614112 ,  8.40866782, -8.64817056,  5.15417372,
-       -1.68812945,  0.23499724]
+'''3rd order 8kHz'''
+# b=[ 0.02437105,  0.        , -0.07311316,  0.        ,  0.07311316,
+#         0.        , -0.02437105]
+# a=[ 1.        , -4.4614112 ,  8.40866782, -8.64817056,  5.15417372,
+#        -1.68812945,  0.23499724]
+
+''' 3rd order 16kHz'''
+# b=[ 0.00399179,  0.        , -0.01197538,  0.        ,  0.01197538,
+#         0.        , -0.00399179]
+
+# a=[  1.        ,  -5.25530868,  11.56342688, -13.64627055,
+#          9.11494089,  -3.26810503,   0.49131914]
+
+''' First order 16kHz'''
+b=[ 0.15151941,  0.        , -0.15151941]
+a=[ 1.        , -1.68375564,  0.69696118]
 
 
 # b = [0.5, 0.5]  # Feedforward coefficients (numerator)
@@ -88,10 +99,10 @@ def iir_filter(x, b, a):
         # Calculate the output using the IIR equation
         output = b[0]*x[n] + np.dot(b[1:], x_history) - np.dot(a[1:], y_history)  # a[0] is assumed to be 1, no need to multiply
         
-        if n == 6:
-            print(f'{b[0]*x[n] + b[1]*x_history[0] - a[1]*y_history[0] + b[2]*x_history[1] - a[2]*y_history[1] + b[3]*x_history[2] - a[3]*y_history[2] + b[4]*x_history[3] - a[4]*y_history[3] + b[5]*x_history[4] - a[5]*y_history[4]=}')
-            print(f'{x_history=}')
-            print(f'{y_history=}')
+        # if n == 6:
+        #     print(f'{b[0]*x[n] + b[1]*x_history[0] - a[1]*y_history[0] + b[2]*x_history[1] - a[2]*y_history[1] + b[3]*x_history[2] - a[3]*y_history[2] + b[4]*x_history[3] - a[4]*y_history[3] + b[5]*x_history[4] - a[5]*y_history[4]=}')
+        #     print(f'{x_history=}')
+        #     print(f'{y_history=}')
 
         # Update output history
         y_history[1:] = y_history[:-1]
@@ -111,8 +122,8 @@ step = [127]
 for i in range(255):
     step.append(255)
 
-output = iir_filter(signal, b, a)
-print(f'{output[:10]=}')
+output = iir_filter(step, b, a)
+print(f'{output[:30]=}')
 
 # yinned = yin(output[10000:10500],8000)
 # print(f'{yinned=}')

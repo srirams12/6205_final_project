@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Wed Dec  4 12:17:31 2024
-| Host         : eecs-digital-26 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Sat Dec  7 21:40:21 2024
+| Host         : eecs-digital-35 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing -file obj/post_route_timing.rpt
 | Design       : top_level
 | Device       : 7s50-csga324
@@ -12,19 +12,19 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanc
 
 Timing Report
 
-Slack (VIOLATED) :        -7.181ns  (required time - arrival time)
-  Source:                 mvg/vcount_out_reg[3]/C
+Slack (VIOLATED) :        -7.727ns  (required time - arrival time)
+  Source:                 note_in_reg[2]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            tmds_red/count_reg[4]/D
                             (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_cw_hdmi
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_cw_hdmi rise@13.468ns - clk_pixel_cw_hdmi rise@0.000ns)
-  Data Path Delay:        20.435ns  (logic 10.635ns (52.043%)  route 9.800ns (47.957%))
-  Logic Levels:           22  (CARRY4=7 DSP48E1=2 LUT2=2 LUT3=1 LUT4=2 LUT5=2 LUT6=6)
-  Clock Path Skew:        -0.036ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -2.080ns = ( 11.388 - 13.468 ) 
-    Source Clock Delay      (SCD):    -2.471ns
+  Data Path Delay:        20.955ns  (logic 10.725ns (51.182%)  route 10.230ns (48.818%))
+  Logic Levels:           21  (CARRY4=5 DSP48E1=2 LUT2=2 LUT4=1 LUT5=2 LUT6=8 MUXF7=1)
+  Clock Path Skew:        -0.061ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.101ns = ( 11.367 - 13.468 ) 
+    Source Clock Delay      (SCD):    -2.467ns
     Clock Pessimism Removal (CPR):    -0.427ns
   Clock Uncertainty:      0.210ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -43,70 +43,66 @@ Slack (VIOLATED) :        -7.181ns  (required time - arrival time)
                                                      -8.486    -5.792 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.660    -4.132    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096    -4.036 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, routed)        1.575    -2.461    wizard_hdmi/CLK
+                         net (fo=7550, routed)        1.575    -2.461    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -3.333    -5.793 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.661    -4.132    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096    -4.036 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, routed)        1.565    -2.471    mvg/clk_pixel
-    SLICE_X11Y12         FDRE                                         r  mvg/vcount_out_reg[3]/C
+                         net (fo=2850, routed)        1.569    -2.467    clk_pixel
+    SLICE_X55Y10         FDRE                                         r  note_in_reg[2]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X11Y12         FDRE (Prop_fdre_C_Q)         0.456    -2.015 r  mvg/vcount_out_reg[3]/Q
-                         net (fo=166, routed)         0.724    -1.291    mvg/vcount_out_reg[9]_0[3]
-    SLICE_X11Y12         LUT3 (Prop_lut3_I0_O)        0.124    -1.167 r  mvg/in_sphere1_i_10/O
-                         net (fo=1, routed)           0.000    -1.167    mvg/in_sphere1_i_10_n_0
-    SLICE_X11Y12         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401    -0.766 r  mvg/in_sphere1_i_3/CO[3]
-                         net (fo=1, routed)           0.000    -0.766    mvg/in_sphere1_i_3_n_0
-    SLICE_X11Y13         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114    -0.652 r  mvg/in_sphere1_i_2/CO[3]
-                         net (fo=1, routed)           0.000    -0.652    mvg/in_sphere1_i_2_n_0
-    SLICE_X11Y14         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334    -0.318 r  mvg/in_sphere1_i_1/O[1]
-                         net (fo=4, routed)           0.747     0.429    my_game/ball/in_sphere1__1_0[9]
-    DSP48_X0Y5           DSP48E1 (Prop_dsp48e1_A[9]_PCOUT[47])
-                                                      4.215     4.644 r  my_game/ball/in_sphere1__0/PCOUT[47]
-                         net (fo=1, routed)           0.002     4.646    my_game/ball/in_sphere1__0_n_106
-    DSP48_X0Y6           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
-                                                      1.518     6.164 r  my_game/ball/in_sphere1__1/P[0]
-                         net (fo=2, routed)           0.915     7.079    my_game/ball/in_sphere1__1_n_105
-    SLICE_X10Y10         LUT2 (Prop_lut2_I0_O)        0.124     7.203 r  my_game/ball/tmds_out[6]_i_298/O
-                         net (fo=1, routed)           0.000     7.203    my_game/ball/tmds_out[6]_i_298_n_0
-    SLICE_X10Y10         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.533     7.736 r  my_game/ball/tmds_out_reg[6]_i_178/CO[3]
-                         net (fo=1, routed)           0.000     7.736    my_game/ball/tmds_out_reg[6]_i_178_n_0
-    SLICE_X10Y11         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323     8.059 r  my_game/ball/tmds_out_reg[6]_i_183/O[1]
-                         net (fo=1, routed)           0.486     8.545    my_game/ball/tmds_out_reg[6]_i_183_n_6
-    SLICE_X11Y9          LUT2 (Prop_lut2_I1_O)        0.306     8.851 r  my_game/ball/tmds_out[6]_i_87/O
-                         net (fo=1, routed)           0.000     8.851    my_game/ball/tmds_out[6]_i_87_n_0
-    SLICE_X11Y9          CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550     9.401 r  my_game/ball/tmds_out_reg[6]_i_30/CO[3]
-                         net (fo=1, routed)           0.000     9.401    my_game/ball/tmds_out_reg[6]_i_30_n_0
-    SLICE_X11Y10         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.222     9.623 f  my_game/ball/tmds_out_reg[6]_i_27/O[0]
-                         net (fo=2, routed)           0.790    10.413    my_game/ball/in_sphere0[24]
-    SLICE_X9Y10          LUT4 (Prop_lut4_I1_O)        0.299    10.712 f  my_game/ball/tmds_out[6]_i_11/O
-                         net (fo=1, routed)           0.739    11.451    my_game/ball/tmds_out[6]_i_11_n_0
-    SLICE_X9Y11          LUT6 (Prop_lut6_I2_O)        0.124    11.575 f  my_game/ball/tmds_out[6]_i_4__0__0/O
-                         net (fo=20, routed)          0.447    12.022    my_game/ball_n_26
-    SLICE_X8Y9           LUT6 (Prop_lut6_I0_O)        0.124    12.146 r  my_game/tmds_out[3]_i_2/O
-                         net (fo=9, routed)           0.795    12.941    mvg/red[3]
-    SLICE_X13Y9          LUT6 (Prop_lut6_I5_O)        0.124    13.065 f  mvg/count[1]_i_6__0/O
-                         net (fo=4, routed)           0.699    13.765    mvg/count[1]_i_6__0_n_0
-    SLICE_X13Y9          LUT5 (Prop_lut5_I2_O)        0.124    13.889 r  mvg/count[1]_i_3/O
-                         net (fo=24, routed)          0.694    14.582    mvg/count[1]_i_3_n_0
-    SLICE_X13Y7          LUT4 (Prop_lut4_I0_O)        0.124    14.706 r  mvg/count[4]_i_19__1/O
-                         net (fo=13, routed)          0.883    15.589    mvg/count[4]_i_19__1_n_0
-    SLICE_X14Y8          LUT6 (Prop_lut6_I1_O)        0.124    15.713 r  mvg/count[4]_i_15__1/O
-                         net (fo=4, routed)           0.596    16.309    mvg/count[4]_i_31_0
-    SLICE_X15Y8          LUT6 (Prop_lut6_I0_O)        0.124    16.433 r  mvg/count[4]_i_13__1_comp/O
-                         net (fo=1, routed)           0.638    17.071    mvg/count[4]_i_13__1_n_0
-    SLICE_X14Y8          LUT5 (Prop_lut5_I3_O)        0.124    17.195 r  mvg/count[4]_i_4__1/O
-                         net (fo=1, routed)           0.645    17.840    mvg/count[4]_i_4__1_n_0
-    SLICE_X15Y7          LUT6 (Prop_lut6_I0_O)        0.124    17.964 r  mvg/count[4]_i_2__1/O
-                         net (fo=1, routed)           0.000    17.964    tmds_red/D[3]
-    SLICE_X15Y7          FDRE                                         r  tmds_red/count_reg[4]/D
+    SLICE_X55Y10         FDRE (Prop_fdre_C_Q)         0.456    -2.011 f  note_in_reg[2]/Q
+                         net (fo=20, routed)          0.870    -1.141    my_game/ball/in_sphere1_i_7[1]
+    SLICE_X57Y10         LUT6 (Prop_lut6_I2_O)        0.124    -1.017 r  my_game/ball/in_sphere1_i_14/O
+                         net (fo=19, routed)          0.596    -0.421    mvg/in_sphere1__1_1
+    SLICE_X54Y10         LUT4 (Prop_lut4_I1_O)        0.124    -0.297 r  mvg/in_sphere1_i_6/O
+                         net (fo=1, routed)           0.000    -0.297    mvg/in_sphere1_i_6_n_0
+    SLICE_X54Y10         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.376     0.079 r  mvg/in_sphere1_i_2/CO[3]
+                         net (fo=1, routed)           0.000     0.079    mvg/in_sphere1_i_2_n_0
+    SLICE_X54Y11         CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     0.318 r  mvg/in_sphere1_i_1/O[2]
+                         net (fo=58, routed)          0.846     1.164    my_game/ball/in_sphere1__1_0[10]
+    DSP48_X1Y5           DSP48E1 (Prop_dsp48e1_A[13]_PCOUT[47])
+                                                      4.213     5.377 r  my_game/ball/in_sphere1__0/PCOUT[47]
+                         net (fo=1, routed)           0.002     5.379    my_game/ball/in_sphere1__0_n_106
+    DSP48_X1Y6           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
+                                                      1.518     6.897 r  my_game/ball/in_sphere1__1/P[0]
+                         net (fo=2, routed)           0.770     7.667    my_game/ball/in_sphere1__1_n_105
+    SLICE_X54Y14         LUT2 (Prop_lut2_I0_O)        0.124     7.791 r  my_game/ball/count[1]_i_580/O
+                         net (fo=1, routed)           0.000     7.791    my_game/ball/count[1]_i_580_n_0
+    SLICE_X54Y14         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     8.324 r  my_game/ball/count_reg[1]_i_363/CO[3]
+                         net (fo=1, routed)           0.000     8.324    my_game/ball/count_reg[1]_i_363_n_0
+    SLICE_X54Y15         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     8.647 r  my_game/ball/count_reg[1]_i_349/O[1]
+                         net (fo=1, routed)           0.652     9.299    my_game/ball/count_reg[1]_i_349_n_6
+    SLICE_X53Y20         LUT2 (Prop_lut2_I1_O)        0.306     9.605 r  my_game/ball/count[1]_i_123/O
+                         net (fo=1, routed)           0.000     9.605    my_game/ball/count[1]_i_123_n_0
+    SLICE_X53Y20         CARRY4 (Prop_carry4_S[1]_O[3])
+                                                      0.640    10.245 r  my_game/ball/count_reg[1]_i_40/O[3]
+                         net (fo=1, routed)           0.798    11.043    my_game/ball/in_sphere0[23]
+    SLICE_X50Y20         LUT6 (Prop_lut6_I1_O)        0.306    11.349 f  my_game/ball/count[1]_i_14/O
+                         net (fo=1, routed)           0.689    12.038    my_game/ball/count[1]_i_14_n_0
+    SLICE_X50Y20         LUT6 (Prop_lut6_I0_O)        0.124    12.162 f  my_game/ball/count[1]_i_6_comp/O
+                         net (fo=43, routed)          0.638    12.800    my_game/wall2/note_display_inst/ball_g[0]
+    SLICE_X48Y19         LUT6 (Prop_lut6_I3_O)        0.124    12.924 r  my_game/wall2/note_display_inst/tmds_out[0]_i_2/O
+                         net (fo=30, routed)          0.911    13.835    my_game/wall2/note_display_inst/red[0]
+    SLICE_X47Y24         LUT5 (Prop_lut5_I4_O)        0.124    13.959 r  my_game/wall2/note_display_inst/tmds_out[2]_i_3/O
+                         net (fo=14, routed)          0.352    14.311    my_game/wall2/note_display_inst/tmds_out[2]_i_3_n_0
+    SLICE_X44Y24         LUT6 (Prop_lut6_I5_O)        0.124    14.435 r  my_game/wall2/note_display_inst/tmds_out[7]_i_2__1/O
+                         net (fo=14, routed)          0.769    15.205    my_game/wall2/note_display_inst/tmds_out[7]_i_2__1_n_0
+    SLICE_X42Y25         LUT6 (Prop_lut6_I5_O)        0.124    15.329 f  my_game/wall2/note_display_inst/count[4]_i_30__0/O
+                         net (fo=3, routed)           0.998    16.326    my_game/wall2/note_display_inst/count[4]_i_30__0_n_0
+    SLICE_X39Y25         LUT6 (Prop_lut6_I3_O)        0.124    16.450 r  my_game/wall2/note_display_inst/count[3]_i_9__1/O
+                         net (fo=1, routed)           0.298    16.748    my_game/wall2/note_display_inst/count[3]_i_9__1_n_0
+    SLICE_X41Y25         LUT5 (Prop_lut5_I4_O)        0.124    16.872 r  my_game/wall2/note_display_inst/count[3]_i_3__0/O
+                         net (fo=13, routed)          0.605    17.477    my_game/wall2/note_display_inst/count[3]_i_3__0_n_0
+    SLICE_X37Y24         MUXF7 (Prop_muxf7_S_O)       0.276    17.753 r  my_game/wall2/note_display_inst/count_reg[4]_i_4/O
+                         net (fo=1, routed)           0.436    18.189    my_game/wall2/note_display_inst/count_reg[4]_i_4_n_0
+    SLICE_X37Y25         LUT6 (Prop_lut6_I0_O)        0.299    18.488 r  my_game/wall2/note_display_inst/count[4]_i_2__0/O
+                         net (fo=1, routed)           0.000    18.488    tmds_red/D[3]
+    SLICE_X37Y25         FDRE                                         r  tmds_red/count_reg[4]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_cw_hdmi rise edge)
@@ -119,21 +115,21 @@ Slack (VIOLATED) :        -7.181ns  (required time - arrival time)
                                                      -7.753     8.266 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.582     9.848    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091     9.939 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, routed)        1.457    11.396    wizard_hdmi/CLK
+                         net (fo=7550, routed)        1.457    11.396    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -3.129     8.267 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.581     9.848    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     9.939 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, routed)        1.449    11.388    tmds_red/clk_pixel
-    SLICE_X15Y7          FDRE                                         r  tmds_red/count_reg[4]/C
-                         clock pessimism             -0.427    10.961    
-                         clock uncertainty           -0.210    10.752    
-    SLICE_X15Y7          FDRE (Setup_fdre_C_D)        0.032    10.784    tmds_red/count_reg[4]
+                         net (fo=2850, routed)        1.428    11.367    tmds_red/clk_pixel
+    SLICE_X37Y25         FDRE                                         r  tmds_red/count_reg[4]/C
+                         clock pessimism             -0.427    10.940    
+                         clock uncertainty           -0.210    10.731    
+    SLICE_X37Y25         FDRE (Setup_fdre_C_D)        0.031    10.762    tmds_red/count_reg[4]
   -------------------------------------------------------------------
-                         required time                         10.784    
-                         arrival time                         -17.964    
+                         required time                         10.762    
+                         arrival time                         -18.488    
   -------------------------------------------------------------------
-                         slack                                 -7.181    
+                         slack                                 -7.727    
 
 
 

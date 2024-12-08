@@ -1,6 +1,6 @@
 module sd_access #(
-    parameter RAM_WIDTH = 18,     // Match RAM data width
-    parameter RAM_DEPTH = 1024    // Match RAM depth
+    parameter RAM_WIDTH = 512,     // Match RAM data width
+    parameter RAM_DEPTH = 3    // Match RAM depth
 )(
     input wire clk,               //  clock
     input wire rst,               // Reset 
@@ -18,7 +18,6 @@ module sd_access #(
     // RAM interface
     output logic [$clog2(RAM_DEPTH)-1:0] ram_addr, // RAM address
     output logic [RAM_WIDTH-1:0] ram_din,           // RAM write data
-    input wire [RAM_WIDTH-1:0] ram_dout,          // RAM read data
     output logic ram_we,                            // RAM write enable
     output logic ram_en                             // RAM enable
 );
@@ -28,15 +27,16 @@ module sd_access #(
     typedef enum logic [3:0] {
         IDLE,
         INIT,
-        SEND_CMD,
-        WAIT_RESP,
-        READ_BLOCK,
-        WAIT_SPI,
-        DONE,
-        ERROR
+        SPI_MODE,
+        VOLTAGE_CHECK,
+        CMD55,
+        ACMD41,
+        REQ_DATA,
+        WAIT,
+        RECIEVE
     } state_t;
 
-    state_t current_state, next_state;
+    state_t state;
 
     // SPI Controller signals
     logic [47:0] spi_cmd;             // Command to send to SD card (48 bits)
@@ -44,6 +44,8 @@ module sd_access #(
     wire spi_done;                  // SPI transaction complete
     logic [7:0] spi_data_in;          // Data to send to SPI controller
     wire [7:0] spi_data_out;        // Data received from SPI controller
+    logic [47:0] command;
+    logic [31:0] send_counter;
 
     // RAM Interface signals
     logic [$clog2(RAM_DEPTH-1)-1:0] ram_addr; // RAM address
@@ -63,7 +65,8 @@ module sd_access #(
 
     // SPI Controller instantiation
     spi_con #(
-        .DATA_WIDTH(8)
+        .DATA_WIDTH(8),
+        .DATA_CLK_PERIOD(500)
     ) spi_inst (
         .clk_in(clk),
         .rst_in(rst),
@@ -77,65 +80,8 @@ module sd_access #(
         .chip_sel_out(chip_sel_out)
     );
 
-    // State Machine
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst)
-            current_state <= IDLE;
-        else
-            current_state <= next_state;
-    end
-        // FSM Transitions
-    always_comb begin
-        // Default values
-        next_state = current_state;
-        case (current_state)
-            IDLE: begin
-                if (read_en)
-                    next_state = INIT;  // Start read operation
-            end
-
-            INIT: begin
-                // Send SD card initialization commands (CMD0, CMD8, etc.)
-                if (cmd_sent)
-                    next_state = SEND_CMD;
-            end
-
-            SEND_CMD: begin
-                // Wait for command response
-                next_state = WAIT_RESP;
-            end
-
-            WAIT_RESP: begin
-                // If valid response received, proceed to read/write
-                if (spi_done && spi_data_out == 8'h00) begin
-                    if (read_active)
-                        next_state = READ_BLOCK;
-                end else if (spi_done && spi_data_out != 8'h00) begin
-                    next_state = ERROR;  // Handle invalid response
-                end
-            end
-
-            READ_BLOCK: begin
-                if (byte_counter == 511) // Once 512 bytes are read, finish
-                    next_state = DONE;
-            end
-
-            DONE: begin
-                next_state = IDLE;  // Go back to idle
-            end
-
-            ERROR: begin
-                next_state = IDLE;  // Return to idle on error
-            end
-
-            default: begin
-                next_state = IDLE; // Default case
-            end
-        endcase
-    end
-
     // FSM Output Logic
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
             spi_trigger <= 0;
             spi_data_in <= 8'b0;
@@ -146,68 +92,146 @@ module sd_access #(
             byte_counter <= 0;
             ram_we <= 0;
             ram_en <= 0;
+            command <= 0;
         end else begin
-            case (current_state)
+            case (state)
                 IDLE: begin
-                    done <= 0;
-                    error <= 0;
-                    cmd_sent <= 0;
-                    read_active <= read_en;
-                    byte_counter <= 0;
-                end
-
-                INIT: begin
-                    // Example: Send CMD0 (GO_IDLE_STATE)
-                    if (!cmd_sent) begin
-                        spi_data_in <= 8'h40; // CMD0 first byte
-                        spi_trigger <= 1;
-                        cmd_sent <= 1;
-                    end else if (spi_done) begin
-                        spi_trigger <= 0;
+                    if(read_en) begin
+                        state <= INIT;
                     end
                 end
-
-                SEND_CMD: begin
-                    // Send the next bytes of the command if required
-                    spi_trigger <= 0;
+                INIT: begin            
+                    if (send_counter < 100000) begin   
+                        // chip_sel_out <= 1; // Ensure CS is high //Cannot change chip sel, so...
+                        send_counter <= send_counter + 1;
+                        state <= INIT;
+                    end else if (send_counter<16000)begin
+                        // chip_sel_out <= 0; // Ensure CS is Low maybe?
+                        send_counter <= send_counter + 1;
+                        state <= INIT;
+                    end else begin
+                        state <= SPI_MODE;
+                        send_counter <= 0;
+                        command <= 48'h40_00_00_00_00_95;
+                    end
                 end
-
-                WAIT_RESP: begin
-                    if (spi_done) begin
-                        if (spi_data_out == 8'h00) begin
-                            // Valid response received
-                            if (read_active)
-                                byte_counter <= 0; // Prepare for read
+                SPI_MODE: begin
+                    if(spi_done) begin
+                        if (send_counter < 6) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= command[47-(8*send_counter) +: 8];
+                            send_counter <= send_counter + 1;
                         end else begin
-                            error <= 1; // Invalid response
+                            spi_data_in <= 8'hFF;
+                            spi_trigger <= 1;
+                            send_counter <= 0;
+                            state <= VOLTAGE_CHECK;
+                            command <= 48'h48_00_00_00_01_AA_87;
                         end
                     end
                 end
-
-                READ_BLOCK: begin
-                    // Read 512 bytes from SD card and write to RAM
-                    if (spi_done) begin
-                        sector_buffer[byte_counter * 8 +: 8] <= spi_data_out;
-                        byte_counter <= byte_counter + 1;
-
-                        // Write data to RAM every RAM_WIDTH bytes
-                        if (byte_counter % (RAM_WIDTH / 8) == 0) begin
-                            ram_din <= sector_buffer[byte_counter * 8 - RAM_WIDTH +: RAM_WIDTH];
-                            ram_we <= 1;
-                            ram_addr <= ram_addr + 1;
+                VOLTAGE_CHECK: begin
+                    if(spi_done) begin
+                        if (send_counter < 6) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= command[47-(8*send_counter) +: 8];
+                            send_counter <= send_counter + 1;
                         end else begin
+                            spi_data_in <= 8'hFF;
+                            spi_trigger <= 1;
+                            send_counter <= 0;
+                            state <= ACMD41;
+                            command <= 48'h77_00_00_00_00_01;
+                        end
+                    end
+                end
+                CMD55: begin
+                    if(spi_done) begin
+                        if (send_counter < 6) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= command[47-(8*send_counter) +: 8];
+                            send_counter <= send_counter + 1;
+                        end else begin
+                            spi_data_in <= 8'hFF;
+                            spi_trigger <= 1;
+                            send_counter <= 0;
+                            state <= ACMD41;
+                            command <= 48'h69_40_00_00_00_77;
+                        end
+                    end
+
+                end
+                ACMD41: begin
+                    if(spi_done) begin
+                        if(spi_data_out != 0'h00) begin
+                            if (send_counter < 6) begin
+                                spi_trigger <= 1;
+                                spi_data_in <= command[47-(8*send_counter) +: 8];
+                                send_counter <= send_counter + 1;
+                            end else begin
+                                spi_data_in <= 8'hFF;
+                                spi_trigger <= 1;
+                                send_counter <= 0;
+                                state <= ACMD41;
+                                command <= 48'h69_40_00_00_00_77;
+                            end
+                        end else begin
+                            send_counter <= 0;
+                            state <= REQ_DATA;
+                            command <= {8'h51,addr_in,8'hFF};
+                        end
+                    end
+                end
+                REQ_DATA: begin
+                    if(spi_done) begin
+                        if (send_counter < 6) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= command[47-(8*send_counter) +: 8];
+                            send_counter <= send_counter + 1;
+                        end else begin
+                            spi_data_in <= 8'hFF;
+                            spi_trigger <= 1;
+                            send_counter <= 0;
+                            state <= RECIEVE;
+                            command <= 48'hFFFF_FFFF_FF;  
+                        end
+                    end
+                end
+                WAIT: begin
+                    if(spi_done) begin
+                        if(spi_data_out != 0'hFE) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= 8'hFF;
+                        end else begin
+                            spi_data_in <= 8'hFF;
+                            spi_trigger <= 1;
+                            send_counter <= 0;
+                            state <= RECIEVE;
+                            ram_addr <= 0;
+                        end
+                    end
+                end
+                RECIEVE: begin
+                    if(spi_done) begin
+                        if (send_counter < 512) begin
+                            spi_trigger <= 1;
+                            spi_data_in <= 8'hFF;
+                            send_counter <= send_counter + 1;
+                            //To Be changed for larger files
+                            ram_addr <= ram_addr + 1;
+                            ram_din <= spi_data_out;
+                            ram_we <= 1;
+                        end else begin
+                            send_counter <= 0;
+                            state <= INIT;
+                            command <= 0;
                             ram_we <= 0;
                         end
+                    end else begin
+                        ram_we <=0;
+
                     end
-                end
 
-
-                DONE: begin
-                    done <= 1;
-                end
-
-                ERROR: begin
-                    error <= 1;
                 end
             endcase
         end

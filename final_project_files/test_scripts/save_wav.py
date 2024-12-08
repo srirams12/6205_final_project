@@ -15,14 +15,15 @@ print("Serial port initialized")
 
 print("Recording 6 seconds of audio:")
 ypoints = []
-for i in range(8000*6):
+fs = 12500
+for i in range(fs*6):
     val = int.from_bytes(ser.read(),'little')
-    if ((i+1)%8000==0):
-        print(f"{(i+1)/8000} seconds complete")
+    if ((i+1)%fs==0):
+        print(f"{(i+1)/fs} seconds complete")
     ypoints.append(val)
 
 with wave.open('output.wav','wb') as wf:
-    wf.setframerate(8000)
+    wf.setframerate(fs)
     wf.setnchannels(1)
     wf.setsampwidth(1)
     samples = bytearray(ypoints)

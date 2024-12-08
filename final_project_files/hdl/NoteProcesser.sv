@@ -55,7 +55,7 @@ module NoteProcessor (
             read_addr <= 0;
             done <= 0;
         end else if (!processing && write_enable == 0) begin
-            if (read_addr < 15) begin
+            if (read_addr < 31) begin
                 read_addr <= read_addr + 1;
             end else begin
                 done <= 1;

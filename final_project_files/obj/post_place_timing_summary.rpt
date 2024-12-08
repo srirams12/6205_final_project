@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Wed Dec  4 12:16:28 2024
-| Host         : eecs-digital-26 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Sat Dec  7 21:38:53 2024
+| Host         : eecs-digital-35 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing_summary -file obj/post_place_timing_summary.rpt
 | Design       : top_level
 | Device       : 7s50-csga324
@@ -53,8 +53,8 @@ Table of Contents
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
 4. checking unconstrained_internal_endpoints (3)
-5. checking no_input_delay (19)
-6. checking no_output_delay (28)
+5. checking no_input_delay (10)
+6. checking no_output_delay (33)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
 9. checking loops (0)
@@ -98,16 +98,16 @@ Table of Contents
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
-5. checking no_input_delay (19)
+5. checking no_input_delay (10)
 -------------------------------
- There are 19 input ports with no input delay specified. (HIGH)
+ There are 10 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 
 
-6. checking no_output_delay (28)
+6. checking no_output_delay (33)
 --------------------------------
- There are 28 ports with no output delay specified. (HIGH)
+ There are 33 ports with no output delay specified. (HIGH)
 
  There are 0 ports with no output delay but user has a false path constraint
 
@@ -152,7 +152,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-     -6.134     -266.259                     85                20962       -0.097       -0.251                      5                20962        0.538        0.000                       0                 10496  
+     -6.845     -349.349                     73                21061       -0.522       -5.761                     21                21061        0.538        0.000                       0                 10413  
 
 
 Timing constraints are not met.
@@ -181,8 +181,8 @@ gclk                   {0.000 4.000}        10.000          100.000
 Clock                      WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----                      -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                     2.000        0.000                       0                     1  
-  clk_100_cw_fast           -1.194      -35.314                     43                15327        0.041        0.000                      0                15327        3.000        0.000                       0                  7623  
-    clk_pixel_cw_hdmi       -6.134     -230.945                     42                 5635       -0.097       -0.251                      5                 5635        6.234        0.000                       0                  2858  
+  clk_100_cw_fast            0.122        0.000                      0                15394        0.093        0.000                      0                15394        3.000        0.000                       0                  7547  
+    clk_pixel_cw_hdmi       -6.845     -248.660                     41                 5635       -0.038       -0.139                      5                 5635        6.234        0.000                       0                  2851  
     clk_tmds_cw_hdmi                                                                                                                                                     0.538        0.000                       0                     8  
     clkfbout_cw_hdmi                                                                                                                                                    47.845        0.000                       0                     3  
   clkfbout_cw_fast                                                                                                                                                       7.845        0.000                       0                     3  
@@ -193,8 +193,9 @@ gclk                                                                            
 | -----------------
 ------------------------------------------------------------------------------------------------
 
-From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
-----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+From Clock         To Clock               WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------         --------               -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+clk_100_cw_fast    clk_pixel_cw_hdmi       -4.537     -100.689                     32                   32       -0.522       -5.621                     16                   32  
 
 
 ------------------------------------------------------------------------------------------------
@@ -241,28 +242,28 @@ High Pulse Width  Slow    PLLE2_ADV/CLKIN1  n/a            2.000         4.000  
 From Clock:  clk_100_cw_fast
   To Clock:  clk_100_cw_fast
 
-Setup :           43  Failing Endpoints,  Worst Slack       -1.194ns,  Total Violation      -35.314ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.041ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.122ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.093ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        3.000ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -1.194ns  (required time - arrival time)
-  Source:                 audio_processor/bandpasser/counter_reg[0]/C
+Slack (MET) :             0.122ns  (required time - arrival time)
+  Source:                 audio_processor/my_yinner/tau_reg[1]_replica_1/C
                             (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            audio_processor/bandpasser/partial_acc2_reg[45]/D
+  Destination:            audio_processor/my_yinner/df_buffer_reg[28][26]/D
                             (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             clk_100_cw_fast
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.000ns  (clk_100_cw_fast rise@10.000ns - clk_100_cw_fast rise@0.000ns)
-  Data Path Delay:        11.122ns  (logic 8.331ns (74.906%)  route 2.791ns (25.094%))
-  Logic Levels:           14  (CARRY4=8 DSP48E1=2 LUT2=2 LUT5=1 MUXF7=1)
-  Clock Path Skew:        -0.029ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -2.133ns = ( 7.867 - 10.000 ) 
-    Source Clock Delay      (SCD):    -2.539ns
-    Clock Pessimism Removal (CPR):    -0.434ns
+  Data Path Delay:        9.499ns  (logic 3.049ns (32.098%)  route 6.450ns (67.902%))
+  Logic Levels:           13  (CARRY4=7 LUT2=1 LUT5=1 LUT6=2 MUXF7=1 MUXF8=1)
+  Clock Path Skew:        -0.036ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.038ns = ( 7.962 - 10.000 ) 
+    Source Clock Delay      (SCD):    -2.510ns
+    Clock Pessimism Removal (CPR):    -0.507ns
   Clock Uncertainty:      0.074ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.129ns
@@ -280,50 +281,45 @@ Slack (VIOLATED) :        -1.194ns  (required time - arrival time)
                                                      -8.525    -5.832 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.660    -4.172    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096    -4.076 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     1.537    -2.539    audio_processor/bandpasser/clk_100_passthrough
-    SLICE_X11Y76         FDRE                                         r  audio_processor/bandpasser/counter_reg[0]/C
+                         net (fo=7550, estimated)     1.566    -2.510    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X53Y34         FDRE                                         r  audio_processor/my_yinner/tau_reg[1]_replica_1/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X11Y76         FDRE (Prop_fdre_C_Q)         0.456    -2.083 r  audio_processor/bandpasser/counter_reg[0]/Q
-                         net (fo=103, estimated)      1.049    -1.034    audio_processor/bandpasser/counter_reg_n_0_[0]
-    SLICE_X8Y78          LUT5 (Prop_lut5_I3_O)        0.124    -0.910 r  audio_processor/bandpasser/partial_acc20_i_46/O
-                         net (fo=1, routed)           0.000    -0.910    audio_processor/bandpasser/partial_acc20_i_46_n_0
-    SLICE_X8Y78          MUXF7 (Prop_muxf7_I1_O)      0.214    -0.696 r  audio_processor/bandpasser/partial_acc20_i_16/O
-                         net (fo=2, estimated)        0.692    -0.004    audio_processor/bandpasser/y_prev[4]
-    DSP48_X0Y30          DSP48E1 (Prop_dsp48e1_B[4]_PCOUT[47])
-                                                      4.024     4.020 r  audio_processor/bandpasser/partial_acc20__1/PCOUT[47]
-                         net (fo=1, estimated)        0.000     4.020    audio_processor/bandpasser/partial_acc20__1_n_106
-    DSP48_X0Y31          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
-                                                      1.518     5.538 r  audio_processor/bandpasser/partial_acc20__2/P[0]
-                         net (fo=2, estimated)        0.748     6.286    audio_processor/bandpasser/partial_acc20__2_n_105
-    SLICE_X11Y75         LUT2 (Prop_lut2_I0_O)        0.124     6.410 r  audio_processor/bandpasser/partial_acc20_carry_i_3/O
-                         net (fo=1, routed)           0.000     6.410    audio_processor/bandpasser/partial_acc20_carry_i_3_n_0
-    SLICE_X11Y75         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550     6.960 r  audio_processor/bandpasser/partial_acc20_carry/CO[3]
-                         net (fo=1, estimated)        0.000     6.960    audio_processor/bandpasser/partial_acc20_carry_n_0
-    SLICE_X11Y76         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.074 r  audio_processor/bandpasser/partial_acc20_carry__0/CO[3]
-                         net (fo=1, estimated)        0.000     7.074    audio_processor/bandpasser/partial_acc20_carry__0_n_0
-    SLICE_X11Y77         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.188 r  audio_processor/bandpasser/partial_acc20_carry__1/CO[3]
-                         net (fo=1, estimated)        0.000     7.188    audio_processor/bandpasser/partial_acc20_carry__1_n_0
-    SLICE_X11Y78         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.302 r  audio_processor/bandpasser/partial_acc20_carry__2/CO[3]
-                         net (fo=1, estimated)        0.000     7.302    audio_processor/bandpasser/partial_acc20_carry__2_n_0
-    SLICE_X11Y79         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.416 r  audio_processor/bandpasser/partial_acc20_carry__3/CO[3]
-                         net (fo=1, estimated)        0.000     7.416    audio_processor/bandpasser/partial_acc20_carry__3_n_0
-    SLICE_X11Y80         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.530 r  audio_processor/bandpasser/partial_acc20_carry__4/CO[3]
-                         net (fo=1, estimated)        0.000     7.530    audio_processor/bandpasser/partial_acc20_carry__4_n_0
-    SLICE_X11Y81         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.644 r  audio_processor/bandpasser/partial_acc20_carry__5/CO[3]
-                         net (fo=1, estimated)        0.000     7.644    audio_processor/bandpasser/partial_acc20_carry__5_n_0
-    SLICE_X11Y82         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334     7.978 r  audio_processor/bandpasser/partial_acc20_carry__6/O[1]
-                         net (fo=1, estimated)        0.302     8.280    audio_processor/bandpasser/partial_acc20_carry__6_n_6
-    SLICE_X9Y82          LUT2 (Prop_lut2_I1_O)        0.303     8.583 r  audio_processor/bandpasser/partial_acc2[45]_i_1/O
-                         net (fo=1, routed)           0.000     8.583    audio_processor/bandpasser/partial_acc2[45]_i_1_n_0
-    SLICE_X9Y82          FDRE                                         r  audio_processor/bandpasser/partial_acc2_reg[45]/D
+    SLICE_X53Y34         FDRE (Prop_fdre_C_Q)         0.456    -2.054 r  audio_processor/my_yinner/tau_reg[1]_replica_1/Q
+                         net (fo=229, estimated)      1.534    -0.520    audio_processor/my_yinner/tau_reg_n_0_[1]_repN_1
+    SLICE_X63Y23         LUT6 (Prop_lut6_I2_O)        0.124    -0.396 r  audio_processor/my_yinner/sum_times_point_one[1]_i_118/O
+                         net (fo=1, routed)           0.000    -0.396    audio_processor/my_yinner/sum_times_point_one[1]_i_118_n_0
+    SLICE_X63Y23         MUXF7 (Prop_muxf7_I0_O)      0.238    -0.158 r  audio_processor/my_yinner/sum_times_point_one_reg[1]_i_68/O
+                         net (fo=1, routed)           0.000    -0.158    audio_processor/my_yinner/sum_times_point_one_reg[1]_i_68_n_0
+    SLICE_X63Y23         MUXF8 (Prop_muxf8_I0_O)      0.104    -0.054 r  audio_processor/my_yinner/sum_times_point_one_reg[1]_i_39/O
+                         net (fo=1, estimated)        0.940     0.886    audio_processor/my_yinner/sum_times_point_one_reg[1]_i_39_n_0
+    SLICE_X60Y29         LUT6 (Prop_lut6_I1_O)        0.316     1.202 r  audio_processor/my_yinner/sum_times_point_one[1]_i_14/O
+                         net (fo=4, estimated)        1.483     2.685    audio_processor/my_yinner/sum_times_point_one[1]_i_14_n_0
+    SLICE_X35Y34         LUT5 (Prop_lut5_I4_O)        0.124     2.809 r  audio_processor/my_yinner/df_buffer[0][3]_i_6/O
+                         net (fo=1, routed)           0.000     2.809    audio_processor/my_yinner/df_buffer[0][3]_i_6_n_0
+    SLICE_X35Y34         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     3.359 r  audio_processor/my_yinner/df_buffer_reg[0][3]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.359    audio_processor/my_yinner/df_buffer_reg[0][3]_i_2_n_0
+    SLICE_X35Y35         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     3.473 r  audio_processor/my_yinner/df_buffer_reg[0][7]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.473    audio_processor/my_yinner/df_buffer_reg[0][7]_i_2_n_0
+    SLICE_X35Y36         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     3.587 r  audio_processor/my_yinner/df_buffer_reg[0][11]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.587    audio_processor/my_yinner/df_buffer_reg[0][11]_i_2_n_0
+    SLICE_X35Y37         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     3.701 r  audio_processor/my_yinner/df_buffer_reg[0][15]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.701    audio_processor/my_yinner/df_buffer_reg[0][15]_i_2_n_0
+    SLICE_X35Y38         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     3.815 r  audio_processor/my_yinner/df_buffer_reg[0][19]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.815    audio_processor/my_yinner/df_buffer_reg[0][19]_i_2_n_0
+    SLICE_X35Y39         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     3.929 r  audio_processor/my_yinner/df_buffer_reg[0][23]_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     3.929    audio_processor/my_yinner/df_buffer_reg[0][23]_i_2_n_0
+    SLICE_X35Y40         CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     4.168 r  audio_processor/my_yinner/df_buffer_reg[0][27]_i_4/O[2]
+                         net (fo=1, estimated)        1.497     5.665    audio_processor/my_yinner/df_buffer_reg[0][27]_i_4_n_5
+    SLICE_X11Y43         LUT2 (Prop_lut2_I1_O)        0.328     5.993 r  audio_processor/my_yinner/df_buffer[0][26]_i_1/O
+                         net (fo=80, estimated)       0.996     6.989    audio_processor/my_yinner/df_buffer[0][26]_i_1_n_0
+    SLICE_X1Y48          FDRE                                         r  audio_processor/my_yinner/df_buffer_reg[28][26]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_100_cw_fast rise edge)
@@ -336,16 +332,16 @@ Slack (VIOLATED) :        -1.194ns  (required time - arrival time)
                                                      -7.790     4.771 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.577     6.348    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091     6.439 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     1.428     7.867    audio_processor/bandpasser/clk_100_passthrough
-    SLICE_X9Y82          FDRE                                         r  audio_processor/bandpasser/partial_acc2_reg[45]/C
-                         clock pessimism             -0.434     7.432    
-                         clock uncertainty           -0.074     7.359    
-    SLICE_X9Y82          FDRE (Setup_fdre_C_D)        0.031     7.390    audio_processor/bandpasser/partial_acc2_reg[45]
+                         net (fo=7550, estimated)     1.523     7.962    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X1Y48          FDRE                                         r  audio_processor/my_yinner/df_buffer_reg[28][26]/C
+                         clock pessimism             -0.507     7.454    
+                         clock uncertainty           -0.074     7.381    
+    SLICE_X1Y48          FDRE (Setup_fdre_C_D)       -0.269     7.112    audio_processor/my_yinner/df_buffer_reg[28][26]
   -------------------------------------------------------------------
-                         required time                          7.390    
-                         arrival time                          -8.583    
+                         required time                          7.112    
+                         arrival time                          -6.989    
   -------------------------------------------------------------------
-                         slack                                 -1.194    
+                         slack                                  0.122    
 
 
 
@@ -353,18 +349,18 @@ Slack (VIOLATED) :        -1.194ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.041ns  (arrival time - required time)
-  Source:                 audio_processor/my_yinner/final_divider/quotient_reg[6]/C
+Slack (MET) :             0.093ns  (arrival time - required time)
+  Source:                 audio_processor/my_yinner/diff_sum_reg[30]/C
                             (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
-  Destination:            audio_processor/my_yinner/final_divider/quotient_reg[8]/D
+  Destination:            audio_processor/my_yinner/sum_times_point_one_reg[28]/D
                             (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
   Path Group:             clk_100_cw_fast
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_100_cw_fast rise@0.000ns - clk_100_cw_fast rise@0.000ns)
-  Data Path Delay:        0.526ns  (logic 0.373ns (70.854%)  route 0.153ns (29.146%))
-  Logic Levels:           2  (CARRY4=2)
-  Clock Path Skew:        0.351ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    -0.239ns
+  Data Path Delay:        0.463ns  (logic 0.252ns (54.406%)  route 0.211ns (45.594%))
+  Logic Levels:           1  (CARRY4=1)
+  Clock Path Skew:        0.265ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    -0.325ns
     Source Clock Delay      (SCD):    -0.539ns
     Clock Pessimism Removal (CPR):    -0.051ns
 
@@ -380,18 +376,15 @@ Slack (MET) :             0.041ns  (arrival time - required time)
                                                      -2.564    -1.827 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.700    -1.127    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.026    -1.101 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     0.562    -0.539    audio_processor/my_yinner/final_divider/clk_100_passthrough
-    SLICE_X54Y99         FDRE                                         r  audio_processor/my_yinner/final_divider/quotient_reg[6]/C
+                         net (fo=7550, estimated)     0.562    -0.539    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X35Y41         FDRE                                         r  audio_processor/my_yinner/diff_sum_reg[30]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X54Y99         FDRE (Prop_fdre_C_Q)         0.164    -0.375 r  audio_processor/my_yinner/final_divider/quotient_reg[6]/Q
-                         net (fo=2, estimated)        0.153    -0.222    audio_processor/my_yinner/final_divider/quotient_reg[6]
-    SLICE_X54Y99         CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.156    -0.066 r  audio_processor/my_yinner/final_divider/quotient_reg[4]_i_1/CO[3]
-                         net (fo=1, estimated)        0.000    -0.066    audio_processor/my_yinner/final_divider/quotient_reg[4]_i_1_n_0
-    SLICE_X54Y100        CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.053    -0.013 r  audio_processor/my_yinner/final_divider/quotient_reg[8]_i_1/O[0]
-                         net (fo=1, routed)           0.000    -0.013    audio_processor/my_yinner/final_divider/quotient_reg[8]_i_1_n_7
-    SLICE_X54Y100        FDRE                                         r  audio_processor/my_yinner/final_divider/quotient_reg[8]/D
+    SLICE_X35Y41         FDRE (Prop_fdre_C_Q)         0.141    -0.398 r  audio_processor/my_yinner/diff_sum_reg[30]/Q
+                         net (fo=2, estimated)        0.211    -0.187    audio_processor/my_yinner/diff_sum_reg_n_0_[30]
+    SLICE_X37Y41         CARRY4 (Prop_carry4_S[2]_O[2])
+                                                      0.111    -0.076 r  audio_processor/my_yinner/sum_times_point_one_reg[29]_i_1/O[2]
+                         net (fo=1, routed)           0.000    -0.076    audio_processor/my_yinner/sum_times_point_one2[30]
+    SLICE_X37Y41         FDRE                                         r  audio_processor/my_yinner/sum_times_point_one_reg[28]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_100_cw_fast rise edge)
@@ -404,15 +397,15 @@ Slack (MET) :             0.041ns  (arrival time - required time)
                                                      -2.875    -1.923 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.737    -1.186    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029    -1.157 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     0.918    -0.239    audio_processor/my_yinner/final_divider/clk_100_passthrough
-    SLICE_X54Y100        FDRE                                         r  audio_processor/my_yinner/final_divider/quotient_reg[8]/C
-                         clock pessimism              0.051    -0.188    
-    SLICE_X54Y100        FDRE (Hold_fdre_C_D)         0.134    -0.054    audio_processor/my_yinner/final_divider/quotient_reg[8]
+                         net (fo=7550, estimated)     0.832    -0.325    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X37Y41         FDRE                                         r  audio_processor/my_yinner/sum_times_point_one_reg[28]/C
+                         clock pessimism              0.051    -0.274    
+    SLICE_X37Y41         FDRE (Hold_fdre_C_D)         0.105    -0.169    audio_processor/my_yinner/sum_times_point_one_reg[28]
   -------------------------------------------------------------------
-                         required time                          0.054    
-                         arrival time                          -0.013    
+                         required time                          0.169    
+                         arrival time                          -0.076    
   -------------------------------------------------------------------
-                         slack                                  0.041    
+                         slack                                  0.093    
 
 
 
@@ -437,28 +430,28 @@ High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         5.000 
 From Clock:  clk_pixel_cw_hdmi
   To Clock:  clk_pixel_cw_hdmi
 
-Setup :           42  Failing Endpoints,  Worst Slack       -6.134ns,  Total Violation     -230.945ns
-Hold  :            5  Failing Endpoints,  Worst Slack       -0.097ns,  Total Violation       -0.251ns
+Setup :           41  Failing Endpoints,  Worst Slack       -6.845ns,  Total Violation     -248.660ns
+Hold  :            5  Failing Endpoints,  Worst Slack       -0.038ns,  Total Violation       -0.139ns
 PW    :            0  Failing Endpoints,  Worst Slack        6.234ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -6.134ns  (required time - arrival time)
-  Source:                 mvg/vcount_out_reg[1]_rep__4/C
+Slack (VIOLATED) :        -6.845ns  (required time - arrival time)
+  Source:                 note_in_reg[5]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            tmds_blue/count_reg[4]/D
                             (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_cw_hdmi
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_cw_hdmi rise@13.468ns - clk_pixel_cw_hdmi rise@0.000ns)
-  Data Path Delay:        19.481ns  (logic 11.102ns (56.989%)  route 8.379ns (43.011%))
-  Logic Levels:           23  (CARRY4=8 DSP48E1=2 LUT2=3 LUT4=2 LUT5=1 LUT6=6 MUXF7=1)
-  Clock Path Skew:        -0.024ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -2.112ns = ( 11.356 - 13.468 ) 
-    Source Clock Delay      (SCD):    -2.511ns
-    Clock Pessimism Removal (CPR):    -0.422ns
+  Data Path Delay:        20.081ns  (logic 10.173ns (50.660%)  route 9.908ns (49.340%))
+  Logic Levels:           19  (CARRY4=4 DSP48E1=2 LUT2=2 LUT5=2 LUT6=9)
+  Clock Path Skew:        -0.053ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.123ns = ( 11.345 - 13.468 ) 
+    Source Clock Delay      (SCD):    -2.507ns
+    Clock Pessimism Removal (CPR):    -0.436ns
   Clock Uncertainty:      0.210ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.414ns
@@ -476,73 +469,61 @@ Slack (VIOLATED) :        -6.134ns  (required time - arrival time)
                                                      -8.525    -5.832 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.660    -4.172    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096    -4.076 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     1.634    -2.442    wizard_hdmi/CLK
+                         net (fo=7550, estimated)     1.634    -2.442    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -3.393    -5.835 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.661    -4.174    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096    -4.078 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, estimated)     1.567    -2.511    mvg/clk_pixel
-    SLICE_X9Y12          FDRE                                         r  mvg/vcount_out_reg[1]_rep__4/C
+                         net (fo=2850, estimated)     1.571    -2.507    clk_pixel
+    SLICE_X55Y10         FDRE                                         r  note_in_reg[5]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X9Y12          FDRE (Prop_fdre_C_Q)         0.456    -2.055 r  mvg/vcount_out_reg[1]_rep__4/Q
-                         net (fo=101, estimated)      0.650    -1.405    mvg/vcount_out_reg[1]_rep__4_0
-    SLICE_X11Y12         LUT2 (Prop_lut2_I0_O)        0.124    -1.281 r  mvg/in_sphere1_i_12/O
-                         net (fo=1, routed)           0.000    -1.281    mvg/in_sphere1_i_12_n_0
-    SLICE_X11Y12         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550    -0.731 r  mvg/in_sphere1_i_3/CO[3]
-                         net (fo=1, estimated)        0.000    -0.731    mvg/in_sphere1_i_3_n_0
-    SLICE_X11Y13         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114    -0.617 r  mvg/in_sphere1_i_2/CO[3]
-                         net (fo=1, estimated)        0.000    -0.617    mvg/in_sphere1_i_2_n_0
-    SLICE_X11Y14         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334    -0.283 r  mvg/in_sphere1_i_1/O[1]
-                         net (fo=4, estimated)        0.691     0.408    my_game/ball/in_sphere1__1_0[9]
-    DSP48_X0Y5           DSP48E1 (Prop_dsp48e1_A[9]_PCOUT[47])
-                                                      4.215     4.623 r  my_game/ball/in_sphere1__0/PCOUT[47]
-                         net (fo=1, estimated)        0.000     4.623    my_game/ball/in_sphere1__0_n_106
-    DSP48_X0Y6           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
-                                                      1.518     6.141 r  my_game/ball/in_sphere1__1/P[0]
-                         net (fo=2, estimated)        0.846     6.987    my_game/ball/in_sphere1__1_n_105
-    SLICE_X10Y10         LUT2 (Prop_lut2_I0_O)        0.124     7.111 r  my_game/ball/tmds_out[6]_i_298/O
-                         net (fo=1, routed)           0.000     7.111    my_game/ball/tmds_out[6]_i_298_n_0
-    SLICE_X10Y10         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.533     7.644 r  my_game/ball/tmds_out_reg[6]_i_178/CO[3]
-                         net (fo=1, estimated)        0.000     7.644    my_game/ball/tmds_out_reg[6]_i_178_n_0
-    SLICE_X10Y11         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.117     7.761 r  my_game/ball/tmds_out_reg[6]_i_183/CO[3]
-                         net (fo=1, estimated)        0.000     7.761    my_game/ball/tmds_out_reg[6]_i_183_n_0
-    SLICE_X10Y12         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323     8.084 r  my_game/ball/tmds_out_reg[6]_i_169/O[1]
-                         net (fo=1, estimated)        0.487     8.571    my_game/ball/tmds_out_reg[6]_i_169_n_6
-    SLICE_X11Y10         LUT2 (Prop_lut2_I1_O)        0.306     8.877 r  my_game/ball/tmds_out[6]_i_72/O
-                         net (fo=1, routed)           0.000     8.877    my_game/ball/tmds_out[6]_i_72_n_0
-    SLICE_X11Y10         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550     9.427 r  my_game/ball/tmds_out_reg[6]_i_27/CO[3]
-                         net (fo=1, estimated)        0.000     9.427    my_game/ball/tmds_out_reg[6]_i_27_n_0
-    SLICE_X11Y11         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334     9.761 f  my_game/ball/tmds_out_reg[6]_i_28/O[1]
-                         net (fo=1, estimated)        0.646    10.407    my_game/ball/in_sphere0[29]
-    SLICE_X9Y11          LUT4 (Prop_lut4_I0_O)        0.303    10.710 f  my_game/ball/tmds_out[6]_i_12/O
-                         net (fo=2, estimated)        0.494    11.204    my_game/ball/tmds_out[6]_i_12_n_0
-    SLICE_X9Y11          LUT6 (Prop_lut6_I3_O)        0.124    11.328 f  my_game/ball/tmds_out[6]_i_4__0__0/O
-                         net (fo=20, estimated)       0.514    11.842    my_game/ball_n_26
-    SLICE_X13Y11         LUT6 (Prop_lut6_I5_O)        0.124    11.966 r  my_game/count[1]_i_20__0/O
-                         net (fo=3, estimated)        0.615    12.581    my_game/ball/count[1]_i_3__1_7
-    SLICE_X12Y9          LUT6 (Prop_lut6_I0_O)        0.124    12.705 f  my_game/ball/count[1]_i_9__0/O
-                         net (fo=1, estimated)        0.776    13.481    my_game/ball/count[1]_i_9__0_n_0
-    SLICE_X15Y9          LUT5 (Prop_lut5_I0_O)        0.124    13.605 r  my_game/ball/count[1]_i_3__1/O
-                         net (fo=26, estimated)       0.733    14.338    mvg/tmds_out_reg[0]
-    SLICE_X8Y12          LUT6 (Prop_lut6_I4_O)        0.124    14.462 r  mvg/count[4]_i_20/O
-                         net (fo=1, estimated)        0.468    14.930    mvg/count[4]_i_20_n_0
-    SLICE_X8Y12          LUT4 (Prop_lut4_I1_O)        0.124    15.054 r  mvg/count[4]_i_16/O
-                         net (fo=4, estimated)        0.664    15.718    mvg/count[4]_i_16_n_0
-    SLICE_X8Y12          LUT6 (Prop_lut6_I0_O)        0.124    15.842 r  mvg/count[4]_i_7/O
-                         net (fo=1, estimated)        0.795    16.637    mvg/count[4]_i_7_n_0
-    SLICE_X8Y11          LUT6 (Prop_lut6_I0_O)        0.124    16.761 r  mvg/count[4]_i_3/O
-                         net (fo=1, routed)           0.000    16.761    mvg/count[4]_i_3_n_0
-    SLICE_X8Y11          MUXF7 (Prop_muxf7_I0_O)      0.209    16.970 r  mvg/count_reg[4]_i_1/O
-                         net (fo=1, routed)           0.000    16.970    tmds_blue/D[1]
-    SLICE_X8Y11          FDRE                                         r  tmds_blue/count_reg[4]/D
+    SLICE_X55Y10         FDRE (Prop_fdre_C_Q)         0.456    -2.051 f  note_in_reg[5]/Q
+                         net (fo=6, estimated)        0.842    -1.209    my_game/ball/in_sphere1_i_7[4]
+    SLICE_X57Y10         LUT6 (Prop_lut6_I0_O)        0.124    -1.085 r  my_game/ball/in_sphere1_i_14/O
+                         net (fo=19, estimated)       0.569    -0.516    mvg/in_sphere1__1_1
+    SLICE_X54Y11         LUT5 (Prop_lut5_I1_O)        0.124    -0.392 r  mvg/in_sphere1_i_4/O
+                         net (fo=1, routed)           0.000    -0.392    mvg/in_sphere1_i_4_n_0
+    SLICE_X54Y11         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.578     0.186 r  mvg/in_sphere1_i_1/O[2]
+                         net (fo=58, estimated)       0.764     0.950    my_game/ball/in_sphere1__1_0[10]
+    DSP48_X1Y5           DSP48E1 (Prop_dsp48e1_A[15]_PCOUT[47])
+                                                      4.213     5.163 r  my_game/ball/in_sphere1__0/PCOUT[47]
+                         net (fo=1, estimated)        0.000     5.163    my_game/ball/in_sphere1__0_n_106
+    DSP48_X1Y6           DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
+                                                      1.518     6.681 r  my_game/ball/in_sphere1__1/P[0]
+                         net (fo=2, estimated)        0.768     7.449    my_game/ball/in_sphere1__1_n_105
+    SLICE_X54Y14         LUT2 (Prop_lut2_I0_O)        0.124     7.573 r  my_game/ball/count[1]_i_580/O
+                         net (fo=1, routed)           0.000     7.573    my_game/ball/count[1]_i_580_n_0
+    SLICE_X54Y14         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     8.106 r  my_game/ball/count_reg[1]_i_363/CO[3]
+                         net (fo=1, estimated)        0.000     8.106    my_game/ball/count_reg[1]_i_363_n_0
+    SLICE_X54Y15         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     8.429 r  my_game/ball/count_reg[1]_i_349/O[1]
+                         net (fo=1, estimated)        0.652     9.081    my_game/ball/count_reg[1]_i_349_n_6
+    SLICE_X53Y20         LUT2 (Prop_lut2_I1_O)        0.306     9.387 r  my_game/ball/count[1]_i_123/O
+                         net (fo=1, routed)           0.000     9.387    my_game/ball/count[1]_i_123_n_0
+    SLICE_X53Y20         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.580     9.967 f  my_game/ball/count_reg[1]_i_40/O[2]
+                         net (fo=1, estimated)        0.832    10.799    my_game/ball/in_sphere0[22]
+    SLICE_X50Y20         LUT6 (Prop_lut6_I0_O)        0.302    11.101 r  my_game/ball/count[1]_i_14/O
+                         net (fo=1, estimated)        0.566    11.667    my_game/ball/count[1]_i_14_n_0
+    SLICE_X48Y19         LUT6 (Prop_lut6_I0_O)        0.124    11.791 r  my_game/ball/count[1]_i_6_comp/O
+                         net (fo=43, estimated)       0.666    12.457    my_game/wall2/note_display_inst/ball_g[0]
+    SLICE_X47Y22         LUT5 (Prop_lut5_I4_O)        0.124    12.581 r  my_game/wall2/note_display_inst/tmds_out[6]_i_6/O
+                         net (fo=4, estimated)        0.832    13.413    my_game/wall2/note_display_inst/blue[4]
+    SLICE_X47Y23         LUT6 (Prop_lut6_I1_O)        0.124    13.537 r  my_game/wall2/note_display_inst/count[1]_i_4__0/O
+                         net (fo=4, estimated)        0.696    14.233    my_game/wall2/note_display_inst/count[1]_i_4__0_n_0
+    SLICE_X46Y23         LUT6 (Prop_lut6_I0_O)        0.124    14.357 r  my_game/wall2/note_display_inst/count[1]_i_2/O
+                         net (fo=25, estimated)       0.354    14.711    my_game/wall2/note_display_inst/count[1]_i_8__0_0
+    SLICE_X45Y23         LUT6 (Prop_lut6_I3_O)        0.124    14.835 r  my_game/wall2/note_display_inst/count[4]_i_21__0/O
+                         net (fo=15, estimated)       0.697    15.532    my_game/wall2/note_display_inst/count[4]_i_21__0_n_0
+    SLICE_X43Y23         LUT6 (Prop_lut6_I0_O)        0.124    15.656 r  my_game/wall2/note_display_inst/count[4]_i_8__0/O
+                         net (fo=2, estimated)        0.668    16.324    my_game/wall2/note_display_inst/count[4]_i_8__0_n_0
+    SLICE_X42Y23         LUT6 (Prop_lut6_I1_O)        0.124    16.448 r  my_game/wall2/note_display_inst/count[4]_i_2__1/O
+                         net (fo=1, estimated)        1.002    17.450    my_game/wall2/note_display_inst/count[4]_i_2__1_n_0
+    SLICE_X40Y20         LUT6 (Prop_lut6_I0_O)        0.124    17.574 r  my_game/wall2/note_display_inst/count[4]_i_1__0/O
+                         net (fo=1, routed)           0.000    17.574    tmds_blue/D[3]
+    SLICE_X40Y20         FDRE                                         r  tmds_blue/count_reg[4]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_cw_hdmi rise edge)
@@ -555,21 +536,21 @@ Slack (VIOLATED) :        -6.134ns  (required time - arrival time)
                                                      -7.790     8.239 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.577     9.816    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091     9.907 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     1.517    11.424    wizard_hdmi/CLK
+                         net (fo=7550, estimated)     1.517    11.424    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -3.187     8.237 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.578     9.815    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     9.906 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, estimated)     1.450    11.356    tmds_blue/clk_pixel
-    SLICE_X8Y11          FDRE                                         r  tmds_blue/count_reg[4]/C
-                         clock pessimism             -0.422    10.933    
-                         clock uncertainty           -0.210    10.724    
-    SLICE_X8Y11          FDRE (Setup_fdre_C_D)        0.113    10.837    tmds_blue/count_reg[4]
+                         net (fo=2850, estimated)     1.439    11.345    tmds_blue/clk_pixel
+    SLICE_X40Y20         FDRE                                         r  tmds_blue/count_reg[4]/C
+                         clock pessimism             -0.436    10.908    
+                         clock uncertainty           -0.210    10.699    
+    SLICE_X40Y20         FDRE (Setup_fdre_C_D)        0.031    10.730    tmds_blue/count_reg[4]
   -------------------------------------------------------------------
-                         required time                         10.837    
-                         arrival time                         -16.970    
+                         required time                         10.730    
+                         arrival time                         -17.574    
   -------------------------------------------------------------------
-                         slack                                 -6.134    
+                         slack                                 -6.845    
 
 
 
@@ -577,20 +558,20 @@ Slack (VIOLATED) :        -6.134ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -0.097ns  (arrival time - required time)
-  Source:                 red_ser/pwup_rst_reg/C
+Slack (VIOLATED) :        -0.038ns  (arrival time - required time)
+  Source:                 my_game/wall2/note_display_inst/letter_row_reg[13]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            green_ser/primary/RST
-                            (rising edge-triggered cell OSERDESE2 clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            my_game/wall2/note_display_inst/note_sprite_reg[13][29]/D
+                            (rising edge-triggered cell FDCE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_cw_hdmi
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_pixel_cw_hdmi rise@0.000ns - clk_pixel_cw_hdmi rise@0.000ns)
-  Data Path Delay:        0.640ns  (logic 0.186ns (29.044%)  route 0.454ns (70.956%))
-  Logic Levels:           1  (LUT2=1)
-  Clock Path Skew:        0.178ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    -0.160ns
-    Source Clock Delay      (SCD):    -0.515ns
-    Clock Pessimism Removal (CPR):    0.177ns
+  Data Path Delay:        0.298ns  (logic 0.141ns (47.279%)  route 0.157ns (52.721%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.260ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    -0.339ns
+    Source Clock Delay      (SCD):    -0.547ns
+    Clock Pessimism Removal (CPR):    -0.052ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
@@ -604,19 +585,17 @@ Slack (VIOLATED) :        -0.097ns  (arrival time - required time)
                                                      -2.564    -1.827 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.700    -1.127    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.026    -1.101 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     0.595    -0.506    wizard_hdmi/CLK
+                         net (fo=7550, estimated)     0.595    -0.506    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.321    -1.827 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.700    -1.127    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026    -1.101 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, estimated)     0.586    -0.515    red_ser/clk_pixel
-    SLICE_X0Y22          FDRE                                         r  red_ser/pwup_rst_reg/C
+                         net (fo=2850, estimated)     0.554    -0.547    my_game/wall2/note_display_inst/clk_pixel
+    SLICE_X36Y27         FDRE                                         r  my_game/wall2/note_display_inst/letter_row_reg[13]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X0Y22          FDRE (Prop_fdre_C_Q)         0.141    -0.374 r  red_ser/pwup_rst_reg/Q
-                         net (fo=1, estimated)        0.209    -0.165    red_ser/blue_ser/pwup_rst
-    SLICE_X0Y22          LUT2 (Prop_lut2_I1_O)        0.045    -0.120 r  red_ser/primary_i_1/O
-                         net (fo=6, estimated)        0.245     0.125    green_ser/RST0
-    OLOGIC_X0Y22         OSERDESE2                                    r  green_ser/primary/RST
+    SLICE_X36Y27         FDRE (Prop_fdre_C_Q)         0.141    -0.406 r  my_game/wall2/note_display_inst/letter_row_reg[13]/Q
+                         net (fo=16, estimated)       0.157    -0.249    my_game/wall2/note_display_inst/data0[29]
+    SLICE_X34Y27         FDCE                                         r  my_game/wall2/note_display_inst/note_sprite_reg[13][29]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_cw_hdmi rise edge)
@@ -629,21 +608,20 @@ Slack (VIOLATED) :        -0.097ns  (arrival time - required time)
                                                      -2.875    -1.923 r  wizard_migcam/plle2_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.737    -1.186    wizard_migcam/clk_100_cw_fast
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029    -1.157 r  wizard_migcam/clkout1_buf/O
-                         net (fo=7622, estimated)     0.864    -0.293    wizard_hdmi/CLK
+                         net (fo=7550, estimated)     0.864    -0.293    wizard_hdmi/CLK
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
                                                      -1.631    -1.924 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        0.737    -1.187    wizard_hdmi/clk_pixel_cw_hdmi
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.029    -1.158 r  wizard_hdmi/clkout1_buf/O
-                         net (fo=2857, estimated)     0.998    -0.160    green_ser/clk_pixel
-    OLOGIC_X0Y22         OSERDESE2                                    r  green_ser/primary/CLKDIV
-                         clock pessimism             -0.177    -0.337    
-    OLOGIC_X0Y22         OSERDESE2 (Hold_oserdese2_CLKDIV_RST)
-                                                      0.559     0.222    green_ser/primary
+                         net (fo=2850, estimated)     0.819    -0.339    my_game/wall2/note_display_inst/clk_pixel
+    SLICE_X34Y27         FDCE                                         r  my_game/wall2/note_display_inst/note_sprite_reg[13][29]/C
+                         clock pessimism              0.052    -0.287    
+    SLICE_X34Y27         FDCE (Hold_fdce_C_D)         0.076    -0.211    my_game/wall2/note_display_inst/note_sprite_reg[13][29]
   -------------------------------------------------------------------
-                         required time                         -0.222    
-                         arrival time                           0.125    
+                         required time                          0.211    
+                         arrival time                          -0.249    
   -------------------------------------------------------------------
-                         slack                                 -0.097    
+                         slack                                 -0.038    
 
 
 
@@ -659,8 +637,8 @@ Sources:            { wizard_hdmi/mmcm_adv_inst/CLKOUT0 }
 Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
 Min Period        n/a     BUFG/I              n/a            2.155         13.468      11.313     BUFGCTRL_X0Y0    wizard_hdmi/clkout1_buf/I
 Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       13.468      199.892    MMCME2_ADV_X1Y0  wizard_hdmi/mmcm_adv_inst/CLKOUT0
-Low Pulse Width   Slow    FDRE/C              n/a            0.500         6.734       6.234      SLICE_X62Y92     mssc/segment_counter_reg[0]/C
-High Pulse Width  Slow    FDRE/C              n/a            0.500         6.734       6.234      SLICE_X62Y92     mssc/segment_counter_reg[0]/C
+Low Pulse Width   Slow    FDRE/C              n/a            0.500         6.734       6.234      SLICE_X44Y12     note_in_reg[0]/C
+High Pulse Width  Slow    FDRE/C              n/a            0.500         6.734       6.234      SLICE_X44Y12     note_in_reg[0]/C
 
 
 
@@ -730,6 +708,163 @@ Sources:            { wizard_migcam/plle2_adv_inst/CLKFBOUT }
 Check Type  Corner  Lib Pin            Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location        Pin
 Min Period  n/a     BUFG/I             n/a            2.155         10.000      7.845      BUFGCTRL_X0Y4   wizard_migcam/clkf_buf/I
 Max Period  n/a     PLLE2_ADV/CLKFBIN  n/a            52.633        10.000      42.633     PLLE2_ADV_X0Y0  wizard_migcam/plle2_adv_inst/CLKFBIN
+
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk_100_cw_fast
+  To Clock:  clk_pixel_cw_hdmi
+
+Setup :           32  Failing Endpoints,  Worst Slack       -4.537ns,  Total Violation     -100.689ns
+Hold  :           16  Failing Endpoints,  Worst Slack       -0.522ns,  Total Violation       -5.621ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (VIOLATED) :        -4.537ns  (required time - arrival time)
+  Source:                 audio_processor/my_yinner/f_out_reg[8]/C
+                            (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            note_in_reg[5]/CE
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Path Group:             clk_pixel_cw_hdmi
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            0.034ns  (clk_pixel_cw_hdmi rise@1670.034ns - clk_100_cw_fast rise@1670.000ns)
+  Data Path Delay:        3.744ns  (logic 0.828ns (22.115%)  route 2.916ns (77.885%))
+  Logic Levels:           3  (LUT3=1 LUT6=2)
+  Clock Path Skew:        -0.109ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -2.109ns = ( 1667.924 - 1670.034 ) 
+    Source Clock Delay      (SCD):    -2.515ns = ( 1667.485 - 1670.000 ) 
+    Clock Pessimism Removal (CPR):    -0.514ns
+  Clock Uncertainty:      0.513ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.343ns
+    Phase Error              (PE):    0.338ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_100_cw_fast rise edge)
+                                                   1670.000  1670.000 r  
+    N15                                               0.000  1670.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  1670.000    wizard_migcam/clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440  1671.440 r  wizard_migcam/clkin1_ibufg/O
+                         net (fo=1, estimated)        1.253  1672.693    wizard_migcam/clk_in1_cw_fast
+    PLLE2_ADV_X0Y0       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT0)
+                                                     -8.525  1664.168 r  wizard_migcam/plle2_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        1.660  1665.828    wizard_migcam/clk_100_cw_fast
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096  1665.924 r  wizard_migcam/clkout1_buf/O
+                         net (fo=7550, estimated)     1.561  1667.485    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X41Y15         FDRE                                         r  audio_processor/my_yinner/f_out_reg[8]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X41Y15         FDRE (Prop_fdre_C_Q)         0.456  1667.941 f  audio_processor/my_yinner/f_out_reg[8]/Q
+                         net (fo=8, estimated)        0.611  1668.552    audio_processor/my_yinner/Q[8]
+    SLICE_X41Y15         LUT3 (Prop_lut3_I0_O)        0.124  1668.676 r  audio_processor/my_yinner/note_in[15]_i_8/O
+                         net (fo=1, estimated)        0.709  1669.385    audio_processor/my_yinner/note_in[15]_i_8_n_0
+    SLICE_X44Y12         LUT6 (Prop_lut6_I2_O)        0.124  1669.509 r  audio_processor/my_yinner/note_in[15]_i_2/O
+                         net (fo=1, estimated)        0.641  1670.150    audio_processor/my_yinner/note_in[15]_i_2_n_0
+    SLICE_X44Y12         LUT6 (Prop_lut6_I0_O)        0.124  1670.274 r  audio_processor/my_yinner/note_in[15]_i_1/O
+                         net (fo=16, estimated)       0.955  1671.229    audio_processor_n_0
+    SLICE_X55Y10         FDRE                                         r  note_in_reg[5]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pixel_cw_hdmi rise edge)
+                                                   1670.034  1670.034 r  
+    N15                                               0.000  1670.034 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  1670.034    wizard_migcam/clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370  1671.404 r  wizard_migcam/clkin1_ibufg/O
+                         net (fo=1, estimated)        1.190  1672.594    wizard_migcam/clk_in1_cw_fast
+    PLLE2_ADV_X0Y0       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT0)
+                                                     -7.790  1664.804 r  wizard_migcam/plle2_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        1.577  1666.381    wizard_migcam/clk_100_cw_fast
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  1666.472 r  wizard_migcam/clkout1_buf/O
+                         net (fo=7550, estimated)     1.517  1667.989    wizard_hdmi/CLK
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.187  1664.802 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        1.578  1666.380    wizard_hdmi/clk_pixel_cw_hdmi
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091  1666.471 r  wizard_hdmi/clkout1_buf/O
+                         net (fo=2850, estimated)     1.453  1667.924    clk_pixel
+    SLICE_X55Y10         FDRE                                         r  note_in_reg[5]/C
+                         clock pessimism             -0.514  1667.410    
+                         clock uncertainty           -0.513  1666.897    
+    SLICE_X55Y10         FDRE (Setup_fdre_C_CE)      -0.205  1666.692    note_in_reg[5]
+  -------------------------------------------------------------------
+                         required time                       1666.692    
+                         arrival time                       -1671.229    
+  -------------------------------------------------------------------
+                         slack                                 -4.537    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (VIOLATED) :        -0.522ns  (arrival time - required time)
+  Source:                 audio_processor/my_yinner/f_out_reg[11]/C
+                            (rising edge-triggered cell FDRE clocked by clk_100_cw_fast  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            note_in_reg[11]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_cw_hdmi  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Path Group:             clk_pixel_cw_hdmi
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk_pixel_cw_hdmi rise@0.000ns - clk_100_cw_fast rise@0.000ns)
+  Data Path Delay:        0.274ns  (logic 0.128ns (46.670%)  route 0.146ns (53.330%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.267ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    -0.327ns
+    Source Clock Delay      (SCD):    -0.538ns
+    Clock Pessimism Removal (CPR):    -0.056ns
+  Clock Uncertainty:      0.513ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.343ns
+    Phase Error              (PE):    0.338ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_100_cw_fast rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    wizard_migcam/clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.209     0.209 r  wizard_migcam/clkin1_ibufg/O
+                         net (fo=1, estimated)        0.528     0.737    wizard_migcam/clk_in1_cw_fast
+    PLLE2_ADV_X0Y0       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT0)
+                                                     -2.564    -1.827 r  wizard_migcam/plle2_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        0.700    -1.127    wizard_migcam/clk_100_cw_fast
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.026    -1.101 r  wizard_migcam/clkout1_buf/O
+                         net (fo=7550, estimated)     0.563    -0.538    audio_processor/my_yinner/clk_100_passthrough
+    SLICE_X44Y11         FDRE                                         r  audio_processor/my_yinner/f_out_reg[11]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X44Y11         FDRE (Prop_fdre_C_Q)         0.128    -0.410 r  audio_processor/my_yinner/f_out_reg[11]/Q
+                         net (fo=2, estimated)        0.146    -0.264    f0[11]
+    SLICE_X44Y12         FDRE                                         r  note_in_reg[11]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pixel_cw_hdmi rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    wizard_migcam/clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.396     0.396 r  wizard_migcam/clkin1_ibufg/O
+                         net (fo=1, estimated)        0.556     0.952    wizard_migcam/clk_in1_cw_fast
+    PLLE2_ADV_X0Y0       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT0)
+                                                     -2.875    -1.923 r  wizard_migcam/plle2_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        0.737    -1.186    wizard_migcam/clk_100_cw_fast
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029    -1.157 r  wizard_migcam/clkout1_buf/O
+                         net (fo=7550, estimated)     0.864    -0.293    wizard_hdmi/CLK
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.631    -1.924 r  wizard_hdmi/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, estimated)        0.737    -1.187    wizard_hdmi/clk_pixel_cw_hdmi
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.029    -1.158 r  wizard_hdmi/clkout1_buf/O
+                         net (fo=2850, estimated)     0.831    -0.327    clk_pixel
+    SLICE_X44Y12         FDRE                                         r  note_in_reg[11]/C
+                         clock pessimism              0.056    -0.271    
+                         clock uncertainty            0.513     0.242    
+    SLICE_X44Y12         FDRE (Hold_fdre_C_D)         0.016     0.258    note_in_reg[11]
+  -------------------------------------------------------------------
+                         required time                         -0.258    
+                         arrival time                          -0.264    
+  -------------------------------------------------------------------
+                         slack                                 -0.522    
+
+
 
 
 

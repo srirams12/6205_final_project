@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1733332306" />
-    <testcase name="test_a" classname="test_bandpass" file="/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/test_bandpass.py" lineno="92" time="10.1895010471344" sim_time_ns="70160.001" ratio_time="6885.5187977757905" />
+    <property name="random_seed" value="1733620424" />
+    <testcase name="test_a" classname="test_FrequencyToNote" file="/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/test_FrequencyToNote.py" lineno="15" time="0.010233640670776367" sim_time_ns="2000.001" ratio_time="195433.96767010694" />
   </testsuite>
 </testsuites>

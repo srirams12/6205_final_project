@@ -13,9 +13,9 @@ module NoteSpriteDisplay (
 
     always_comb begin
         // Calculate base addresses
-        base_address       = (new_note[7:5] - 1) * 16;  // Letter (A=0, B=16, ..., G=96)
+        base_address       = (new_note[7:5]) * 16;  // Letter (A=0, B=16, ..., G=96)
         accidental_address = (new_note[4:3] == 2'b10) ? 272 : 256; // Flat or Blank
-        octave_address     = 128 + (new_note[2:0] * 16); // Octave (0=128, ..., 7=240)
+        octave_address     = 96 + (new_note[2:0] * 16); // Octave (0=128, ..., 7=240)
     end
 
     // Temporary storage for ROM data
@@ -65,7 +65,15 @@ module NoteSpriteDisplay (
                 FETCH_O: begin 
                     addr <= octave_address + row;
                     octave_row <= rom_data;
-                    note_sprite[row] <= {accidental_row , octave_row,letter_row};
+                    if (accidental_row == 0) begin
+                        // {in the middle, on the left, on the right}
+
+                        note_sprite[row] <= {octave_row, letter_row, 16'h0000};
+                    end else begin
+                        // {on the right, on the left, in the middle}
+                        note_sprite[row] <= {octave_row, letter_row , accidental_row};
+
+                    end
                     // note_sprite[row] <= {new_note, new_note,new_note, new_note,new_note, new_note};
                     if (row == 15) begin 
                         state <= IDLE;

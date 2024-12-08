@@ -1,5 +1,5 @@
 module ball_sprite #(
-  parameter WIDTH=32, HEIGHT=512, GAP_HEIGHT=16,Y_HEIGHT= 208,SPHERE_R = 16 ,COLOR=24'hFF_FF_FF)(
+  parameter WIDTH=32, HEIGHT=512, GAP_HEIGHT=16,Y_HEIGHT= 600,SPHERE_R = 16 ,COLOR=24'hFF_FF_FF)(
   input wire [10:0] hcount_in,
   input wire [9:0] vcount_in,
   input wire[15:0] freq_in,
@@ -13,7 +13,7 @@ module ball_sprite #(
   logic [8:0] ball_pos;       // Declare `gap_pos` as a 9-bit signal
   logic [31:0] shifted_val;  // Temporary signal to store the shifted value
   
-  assign shifted_val = freq_in >> 2;  // Perform the shift first
+  assign shifted_val = freq_in >> 1;  // Perform the shift first
   assign ball_pos = shifted_val[8:0];
 
   // Calculate the circle's center
@@ -21,8 +21,8 @@ module ball_sprite #(
   logic [9:0] y_center;
   assign x_center = 640 + SPHERE_R;   
   assign ball_x = x_center+ SPHERE_R;        
-  assign y_center = Y_HEIGHT + ball_pos+ 20;       // Circle's vertical center
-  assign ball_y = y_center - 16;
+  assign y_center = Y_HEIGHT - ball_pos;       // Circle's vertical center
+  assign ball_y = y_center;
 
   // Check if the current pixel is inside the sphere
   logic in_sphere;
@@ -42,9 +42,9 @@ module ball_sprite #(
       // red_out = {dynamic_color[19:16], 0'h0};
       // green_out = {dynamic_color[11:8], 0'h0};
       // blue_out = {dynamic_color[3:0], 0'h0};
-      red_out = 8'hff;
-      green_out = 8'hff;
-      blue_out = 8'hff;
+      red_out = 8'hf4;
+      green_out = 8'h80;
+      blue_out = 8'h37;
     end else begin
       red_out = 0;
       green_out = 0;

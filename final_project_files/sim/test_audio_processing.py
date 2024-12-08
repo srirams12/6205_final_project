@@ -76,16 +76,30 @@ def yin(signal, sample_rate, fmin=50, fmax=1500, threshold=0.1):
 
 # sine wave
 frequency = 300
-sample_rate = 8000
+sample_rate = 16000
 amplitude = 127
 t = np.linspace(0, 1, sample_rate, endpoint=False)
-t = t[:500]
+t = t[:1000]
 sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 # sine_wave = np.clip(sine_wave, -255, 255)
 
 # singing C
-sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
-signal = signal[30000:30500]
+# sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
+# signal = signal[30000:30500]
+
+sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/scale_actual.wav')
+signal_c = signal[29400:30400]
+signal_d = signal[44000:45000]
+signal_e = signal[58000:59000]
+signal_f = signal[72000:73000]
+signal_g = signal[86000:87000]
+signal_a = signal[100000:101000]
+signal_b = signal[113200:114200]
+signal_c_high = signal[133000:134000]
+
+signals = [signal_c, signal_d, signal_e, signal_f, signal_g, signal_a, signal_b, signal_c_high]
+
+
 # step response
 step = [127]
 for i in range(255):
@@ -98,6 +112,15 @@ def convert_to_signed(value):
     else:
         return value
 
+# C: 266
+# D: 296
+# E: 333
+# F: 347
+# G: 400
+# A: 444
+# B: 500
+# C: 533
+
 @cocotb.test()
 async def test_a(dut):
     filtered = []
@@ -108,8 +131,8 @@ async def test_a(dut):
     dut.rst_in.value = 0
 
     # send audio into buffer
-    for i in range(len(signal)):
-        dut.audio_in.value = int(signal[i])
+    for i in range(len(signals[3])):
+        dut.audio_in.value = int(signals[3][i])
         dut.audio_in_valid.value = 1
 
         await ClockCycles(dut.clk_in, 1)
@@ -129,8 +152,10 @@ async def test_a(dut):
 
     # # wait for computation to be done
     # # await RisingEdge(dut.f_out_valid)
+    clock_cycles = 0
     while dut.my_yinner.state.value != 2:
         await ClockCycles(dut.clk_in, 1)
+        clock_cycles += 1
     
     taus = []
     sum_df = []
@@ -166,7 +191,9 @@ async def test_a(dut):
 
     plt.show()
 
-    await ClockCycles(dut.clk_in, 500)
+    await ClockCycles(dut.clk_in, 5000)
+
+    print(f'{clock_cycles+500=}')
 
 
 

@@ -19,7 +19,11 @@ module top_level
     output logic [3:0] ss0_an,//anode control for upper four digits of seven-seg display
     output logic [3:0] ss1_an,//anode control for lower four digits of seven-seg display
     output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
-    output logic [6:0] ss1_c //cathode controls for the segments of lower four digits
+    output logic [6:0] ss1_c, //cathode controls for the segments of lower four digits
+    output logic sd_clk, //Control for sd card 
+    output logic sd_cmd,
+    output logic sd_cs,
+    input wire sd_data
 );
 
     //shut up those rgb LEDs for now (active high):
@@ -136,12 +140,71 @@ module top_level
             note_in <= f0[15:0];
         end
     end
+    //Ram/SD Variables
+    localparam BRAM_WIDTH = 8;
+    localparam BRAM_DEPTH = 1024;
+    logic [7:0] data_out;
+    logic [3:0] addra = 4'b0;
+    logic [3:0] addrb ;
+    logic wenb;
+    logic [511:0] dinb;
+    logic [511:0] douta;
+
+
+    sd_access  #(
+        .RAM_WIDTH(BRAM_WIDTH),
+        .RAM_DEPTH(BRAM_DEPTH)
+    ) sd_card (
+        .clk(clk_100_passthrough),
+        .rst(sys_rst),
+        .addr_in(sw[15:12]),
+        .read_en(btn[2]),
+        .data_out(data_out),
+        .done(),
+        .error(), 
+        .chip_data_out(sd_cmd),
+        .chip_data_in(sd_data),
+        .chip_clk_out(sd_clk),
+        .chip_sel_out(sd_cs),
+        .ram_addr(addrb),
+        .ram_din(dinb),
+        .ram_we(wenb),
+        .ram_en()
+    );
+    assign led[9:0] = {data_out,wenb,sd_cs,btn[2]};
+
+    xilinx_true_dual_port_read_first_2_clock_ram
+     #(.RAM_WIDTH(BRAM_WIDTH),
+       .RAM_DEPTH(BRAM_DEPTH)) audio_bram
+       (
+        // PORT A
+        .addra(addra),
+        .dina(0), // we only use port A for reads!
+        .clka(clk_100_passthrough),
+        .wea(1'b0), // read only
+        .ena(1'b1),
+        .rsta(sys_rst),
+        .regcea(1'b1),
+        .douta(douta),
+        // PORT B
+        .addrb(addrb),
+        .dinb(dinb),
+        .clkb(clk_100_passthrough),
+        .web(wenb), // write always
+        .enb(1'b1),
+        .rstb(sys_rst),
+        .regceb(1'b1),
+        .doutb() // we only use port B for writes!
+        );
+
 
     // SEVEN SEGMENT CONTROLLER
     logic [6:0] ss_c; 
     seven_segment_controller mssc(.clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .val_in(note_in),
+        .val_in({data_out,note_in}),
+        // .val_in(note_in),
+
         .cat_out(ss_c),
         .an_out({ss0_an, ss1_an})
     );
@@ -185,6 +248,7 @@ module top_level
         .nf_in(new_frame),
         .hcount_in(hcount),
         .vcount_in(vcount),
+        .sw(sw),
         .red_out(pg_r),
         .green_out(pg_g),
         .blue_out(pg_b)

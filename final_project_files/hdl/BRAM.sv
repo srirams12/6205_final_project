@@ -6,8 +6,8 @@ module BRAM (
     input logic [3:0] read_addr,  // Address for reading
     output logic [7:0] read_data  // Data output
 );
-    // 16x8 BRAM (16 locations, 8 bits per location)
-    logic [7:0] memory [0:15];
+    // 16x8 BRAM (32 locations, 8 bits per location)
+    logic [7:0] memory [0:31];
 
     always_ff @(posedge clk) begin
         if (write_enable)

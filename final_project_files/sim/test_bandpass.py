@@ -70,14 +70,14 @@ def yin(signal, sample_rate, fmin=50, fmax=1500, threshold=0.1):
 
 # Parameters
 frequency = 300
-sample_rate = 8000
+sample_rate = 16000
 amplitude = 127
 t = np.linspace(0, 1, sample_rate, endpoint=False)
 t = t[:500]
 sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
 
 sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/c_sing.wav')
-signal = signal[20000:20501]
+signal = signal[20000:21000]
 step = [127]
 for i in range(255):
     step.append(255)
@@ -111,16 +111,16 @@ async def test_a(dut):
 
     
 
-    # plt.plot([i for i in range(len(signal))], signal)
+    # plt.plot([i for i in range(len(sine_wave))], sine_wave)
     # plt.show()
-    print(f'{filtered[:10]=}')
+    print(f'{filtered[:30]=}')
     print(f'{max(filtered)=}')
     print(f'{min(filtered)=}')
 
     plt.plot([i for i in range(len(signal))], [int(f) for f in signal])
     plt.show()
 
-    print(f'{yin(np.array(filtered), 8000)=}')
+    print(f'{yin(np.array(filtered), 16000)=}')
     plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
     plt.show()
 

@@ -1,5 +1,5 @@
 module block_sprite #(
-  parameter WIDTH=32, HEIGHT=512, GAP_HEIGHT=50,Y_HEIGHT= 208 ,COLOR=24'hFF_FF_FF)(
+  parameter WIDTH=32, HEIGHT=512, GAP_HEIGHT=50,Y_HEIGHT= 600 ,COLOR=24'hFF_FF_FF, Y_TOP=100)(
   input wire clk,
   input wire rst,
   input wire [10:0] hcount_in,
@@ -17,8 +17,8 @@ module block_sprite #(
   logic [10:0] note_x;                  // X position of the note sprite
   logic [9:0] note_y;                   // Y position of the note sprite
 
-  assign note_x = x_in;                 // Align horizontally with the block
-  assign note_y = Y_HEIGHT - FONT_HEIGHT; // Place above the block
+  assign note_x = x_in - 8;                 // Align horizontally with the block
+  assign note_y = Y_TOP - FONT_HEIGHT - 10; // Place above the block
 
   logic [47:0] note_sprite [0:15];       // Combined sprite row for the note
 
@@ -39,14 +39,15 @@ module block_sprite #(
 
   logic [8:0] gap_pos;       // Declare `gap_pos` as a 9-bit signal
   logic [31:0] shifted_val;  // Temporary signal to store the shifted value
-  assign gap_height = gap_pos + Y_HEIGHT;
-  assign shifted_val = freq_in >> 2;  // Perform the shift first
+  assign shifted_val = freq_in >> 1;  // Perform the shift first
   assign gap_pos = shifted_val[8:0];
+  assign gap_height = Y_HEIGHT - gap_pos;
+
   logic in_top_block, in_bottom_block;
   assign in_top_block = ((hcount_in >= x_in && hcount_in < (x_in + WIDTH)) &&
-                         (vcount_in >= Y_HEIGHT && vcount_in < (Y_HEIGHT + gap_pos)));
+                         (vcount_in <= gap_height - GAP_HEIGHT / 2 && vcount_in > (Y_TOP)));
   assign in_bottom_block = ((hcount_in >= x_in && hcount_in < (x_in + WIDTH)) &&
-                            (vcount_in >= (Y_HEIGHT + gap_pos + GAP_HEIGHT) && vcount_in < (Y_HEIGHT + HEIGHT)));
+                            (vcount_in >= (gap_height + GAP_HEIGHT/2) && vcount_in < 720));
   logic in_sprite;
   assign in_sprite = in_top_block || in_bottom_block;
 
@@ -76,9 +77,12 @@ module block_sprite #(
       end
     end else if (in_sprite) begin
         // Default block sprite color
-        red_out = dynamic_color[23:16];
-        green_out = dynamic_color[15:8];
-        blue_out = dynamic_color[7:0];
+        // red_out = dynamic_color[23:16];
+        // green_out = dynamic_color[15:8];
+        // blue_out = dynamic_color[7:0];
+        red_out = 8'hd1;  // White pixel for the sprite
+        green_out = 8'haf;
+        blue_out = 8'h84;
     end else begin
         // Background color
         red_out = 0;

@@ -6,7 +6,7 @@ from scipy.io import wavfile
 import serial
 import wave
 
-def yin(signal, sample_rate, fmin=50, fmax=1500, threshold=0.1):
+def yin(signal, sample_rate, fmin=100, fmax=1000, threshold=0.1):
     """
     Estimate the fundamental frequency (F0) of a signal using the YIN algorithm.
 
@@ -67,6 +67,7 @@ def butter_bandpass(lowcut, highcut, fs, order):
     low = lowcut / nyquist
     high = highcut / nyquist
     b, a = iirfilter(order, [low, high], btype='band', ftype='butter')
+    print(f'{fs=}')
     print(f'{b=}{a=}')
     return b, a
 
@@ -80,10 +81,25 @@ def split_signal_into_windows(signal, window_size):
     return [signal[window_size * i : window_size * (i + 1)] for i in range(num_windows)]
 
 if __name__ == "__main__":
-    sample_rate, signal = wavfile.read('c_sing.wav')
-    _, noise = wavfile.read('noise.wav')
 
-    signal = butter_bandpass_filter(signal, 100, 1000, 8000, 3)
+    frequency = 300
+    sample_rate = 16000
+    amplitude = 127
+    t = np.linspace(0, 1, sample_rate, endpoint=False)
+    t = t[:1000]
+    sine_wave = amplitude * (np.sin(2 * np.pi * frequency * t) + 1)
+
+    sample_rate, signal = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/songs/scale16khz.wav')
+    # sample_rate = 50000
+    print(f'{sample_rate=}')
+    # signal = signal[:160000]
+
+    # signal = sine_wave
+    # sample_rate = 16000
+    signal = butter_bandpass_filter(signal, 100, 1000, sample_rate, 1)
+    plt.plot([i for i in range(1000)], signal[:1000])
+    plt.show()
+
     print(type(signal))
     duration = len(signal)/sample_rate  # seconds
     window_size = 500 # samples
@@ -111,6 +127,7 @@ if __name__ == "__main__":
     
 
     plt.plot(t_f0, f0)
+    plt.scatter([0.5,1,1.5,2,2.5,3,3.5,4,4.5,5],[650,650,650,650,650,650,650,650,650,650])
     ax = plt.gca()
     # ax.set_xlim([0.125, .225])
     plt.show()

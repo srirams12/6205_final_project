@@ -1,12 +1,13 @@
 module FrequencyToNote (
-    input logic [31:0] frequency,   // Input frequency in Hz (integer for simplicity)
+    input wire clk_in,
+    input logic [15:0] frequency,   // Input frequency in Hz (integer for simplicity)
     output logic [7:0] note_code   // Encoded note: [7:5]=note, [4:3]=accidental, [2:0]=octave
 );
 
     // Internal variables
-    logic [7:0] note_mapping [0:11]; // 12 semitones in an octave
+    logic [7:0] note_mapping [0:26]; // 12 semitones in an octave
     logic [7:0] result;
-    logic [31:0] base_frequencies [0:11]; // Base frequencies for an octave
+    logic [15:0] base_frequencies [0:26]; // Base frequencies for an octave
     
     // Initialize note mappings and base frequencies
     initial begin
@@ -74,17 +75,31 @@ module FrequencyToNote (
         result = 8'b00000000; // Default result
         for (int i = 0; i < 27; i++) begin
             if (frequency >= base_frequencies[i] && frequency < base_frequencies[i + 1]) begin
-                result = note_mapping[i];
+                result[7:3] = note_mapping[i][7:3];
+                if (i < 3) begin
+                    result[2:0] = 3;
+                end else if (i < 15) begin
+                    result[2:0] = 4;
+                end else begin
+                    result[2:0] = 5;
+                end
             end
         end
-        // Determine octave based on frequency
-        for (int octave = 0; octave < 8; octave++) begin
-            if (frequency < (base_frequencies[0] << octave)) begin
-                result[2:0] = octave - 1;
-                break;
-            end
-        end
+
     end
+
+    // always_comb begin
+        
+    //     // Determine octave based on frequency
+    //     for (int octave = 0; octave < 8; octave++) begin
+    //         if (frequency < (16 << octave)) begin
+    //             // if (result[2:0] == 0) begin
+    //                 result[2:0] = octave - 1;
+    //             // end
+    //             break;
+    //         end
+    //     end
+    // end
 
     assign note_code = result;
 endmodule
