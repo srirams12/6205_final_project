@@ -137,6 +137,9 @@ module yinner #(
 
                         lower_index <= sample_num + 1 < WINDOW_SIZE ? sample_num + 1 : sample_num + 1 - WINDOW_SIZE;
                         upper_index <= sample_num + 1 + tau < WINDOW_SIZE ? sample_num + 1 + tau : sample_num + 1 + tau - WINDOW_SIZE;
+
+                        sum_times_point_one <= 0;
+                        product <= 0;
                     end
                 end
 

@@ -74,7 +74,9 @@ module top_level
 
 
     // 100hz trigger for the yin
-    localparam CYCLES_PER_TRIGGER_YIN = 10000000;
+    // localparam CYCLES_PER_TRIGGER_YIN = 10000000;
+    localparam CYCLES_PER_TRIGGER_YIN = 5000000;
+
     logic [31:0]        trigger_count_yin;
     logic               yin_trigger;
     counter counter_100hz_trigger (
@@ -147,6 +149,8 @@ module top_level
     logic [3:0] addra = 4'b0;
     logic [3:0] addrb ;
     logic wenb;
+    logic [5:0] sd_state;
+    logic [31:0] send_counter;
     logic [511:0] dinb;
     logic [511:0] douta;
 
@@ -169,9 +173,11 @@ module top_level
         .ram_addr(addrb),
         .ram_din(dinb),
         .ram_we(wenb),
-        .ram_en()
+        .ram_en(),
+        .hot_state(sd_state),
+        .send_counter(send_counter)
     );
-    assign led[9:0] = {data_out,wenb,sd_cs,btn[2]};
+    assign led[15:0] = {sd_state,data_out,wenb,sd_cs,btn[2]};
 
     xilinx_true_dual_port_read_first_2_clock_ram
      #(.RAM_WIDTH(BRAM_WIDTH),
@@ -202,13 +208,13 @@ module top_level
     logic [6:0] ss_c; 
     seven_segment_controller mssc(.clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .val_in({data_out,note_in}),
+        .val_in({send_counter,note_in}),
         // .val_in(note_in),
 
         .cat_out(ss_c),
         .an_out({ss0_an, ss1_an})
     );
-
+    
     assign ss0_c = ss_c; //control upper four digit's cathodes!
     assign ss1_c = ss_c;
 

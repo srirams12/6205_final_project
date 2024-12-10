@@ -19,8 +19,10 @@ module sd_access #(
     output logic [$clog2(RAM_DEPTH)-1:0] ram_addr, // RAM address
     output logic [RAM_WIDTH-1:0] ram_din,           // RAM write data
     output logic ram_we,                            // RAM write enable
-    output logic ram_en                             // RAM enable
-);
+    output logic ram_en,                             // RAM enable
+    output logic [5:0] hot_state,
+    output logic [31:0] send_counter
+    );
 
 
     // FSM states
@@ -37,6 +39,7 @@ module sd_access #(
     } state_t;
 
     state_t state;
+    assign hot_state = {state == ACMD41,state == CMD55, state == VOLTAGE_CHECK, state == SPI_MODE,state == INIT,state == IDLE};
 
     // SPI Controller signals
     logic [47:0] spi_cmd;             // Command to send to SD card (48 bits)
@@ -45,7 +48,7 @@ module sd_access #(
     logic [7:0] spi_data_in;          // Data to send to SPI controller
     wire [7:0] spi_data_out;        // Data received from SPI controller
     logic [47:0] command;
-    logic [31:0] send_counter;
+    // logic [31:0] send_counter;
 
     // RAM Interface signals
     logic [$clog2(RAM_DEPTH-1)-1:0] ram_addr; // RAM address
@@ -93,6 +96,7 @@ module sd_access #(
             ram_we <= 0;
             ram_en <= 0;
             command <= 0;
+            state <=IDLE;
         end else begin
             case (state)
                 IDLE: begin
@@ -104,11 +108,9 @@ module sd_access #(
                     if (send_counter < 100000) begin   
                         // chip_sel_out <= 1; // Ensure CS is high //Cannot change chip sel, so...
                         send_counter <= send_counter + 1;
-                        state <= INIT;
                     end else if (send_counter<16000)begin
                         // chip_sel_out <= 0; // Ensure CS is Low maybe?
                         send_counter <= send_counter + 1;
-                        state <= INIT;
                     end else begin
                         state <= SPI_MODE;
                         send_counter <= 0;
@@ -116,7 +118,7 @@ module sd_access #(
                     end
                 end
                 SPI_MODE: begin
-                    if(spi_done) begin
+                    if(chip_sel_out == 1) begin
                         if (send_counter < 6) begin
                             spi_trigger <= 1;
                             spi_data_in <= command[47-(8*send_counter) +: 8];
@@ -126,12 +128,12 @@ module sd_access #(
                             spi_trigger <= 1;
                             send_counter <= 0;
                             state <= VOLTAGE_CHECK;
-                            command <= 48'h48_00_00_00_01_AA_87;
+                            command <= 48'h48_00_00_01_AA_87;
                         end
                     end
                 end
                 VOLTAGE_CHECK: begin
-                    if(spi_done) begin
+                    if(chip_sel_out == 1) begin
                         if (send_counter < 6) begin
                             spi_trigger <= 1;
                             spi_data_in <= command[47-(8*send_counter) +: 8];
@@ -140,13 +142,15 @@ module sd_access #(
                             spi_data_in <= 8'hFF;
                             spi_trigger <= 1;
                             send_counter <= 0;
-                            state <= ACMD41;
+                            state <= CMD55;
                             command <= 48'h77_00_00_00_00_01;
                         end
+                    end else begin
+                        send_counter <= 4'hF;
                     end
                 end
                 CMD55: begin
-                    if(spi_done) begin
+                    if(chip_sel_out == 1) begin
                         if (send_counter < 6) begin
                             spi_trigger <= 1;
                             spi_data_in <= command[47-(8*send_counter) +: 8];
@@ -162,7 +166,7 @@ module sd_access #(
 
                 end
                 ACMD41: begin
-                    if(spi_done) begin
+                    if(chip_sel_out == 1) begin
                         if(spi_data_out != 0'h00) begin
                             if (send_counter < 6) begin
                                 spi_trigger <= 1;
@@ -192,7 +196,7 @@ module sd_access #(
                             spi_data_in <= 8'hFF;
                             spi_trigger <= 1;
                             send_counter <= 0;
-                            state <= RECIEVE;
+                            state <= WAIT;
                             command <= 48'hFFFF_FFFF_FF;  
                         end
                     end

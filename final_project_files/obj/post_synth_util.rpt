@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
-| Date         : Sat Dec  7 21:38:18 2024
-| Host         : eecs-digital-35 running 64-bit Ubuntu 24.04.1 LTS
+| Date         : Tue Dec 10 16:23:31 2024
+| Host         : eecs-digital-05 running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_utilization -file obj/post_synth_util.rpt -hierarchical -hierarchical_depth 4
 | Design       : top_level
 | Device       : xc7s50csga324-1
@@ -22,42 +22,51 @@ Table of Contents
 +-----------------------------+--------------------------+------------+------------+---------+------+-------+--------+--------+------------+
 |           Instance          |          Module          | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | DSP Blocks |
 +-----------------------------+--------------------------+------------+------------+---------+------+-------+--------+--------+------------+
-| top_level                   |                    (top) |       8012 |       8012 |       0 |    0 | 10376 |      0 |      0 |         13 |
+| top_level                   |                    (top) |      14130 |      14130 |       0 |    0 | 18041 |     16 |      0 |         14 |
 |   (top_level)               |                    (top) |          0 |          0 |       0 |    0 |    16 |      0 |      0 |          0 |
-|   audio_processor           |         audio_processing |       5198 |       5198 |       0 |    0 |  7327 |      0 |      0 |          7 |
+|   audio_processor           |         audio_processing |       5429 |       5429 |       0 |    0 |  7343 |      0 |      0 |          7 |
 |     bandpasser              |                 bandpass |        343 |        343 |       0 |    0 |   216 |      0 |      0 |          6 |
-|     my_yinner               |                   yinner |       4855 |       4855 |       0 |    0 |  7111 |      0 |      0 |          1 |
-|       (my_yinner)           |                   yinner |       4792 |       4792 |       0 |    0 |  7021 |      0 |      0 |          1 |
-|       final_divider         |                  divider |         63 |         63 |       0 |    0 |    90 |      0 |      0 |          0 |
+|     my_yinner               |                   yinner |       5086 |       5086 |       0 |    0 |  7127 |      0 |      0 |          1 |
+|       (my_yinner)           |                   yinner |       5024 |       5024 |       0 |    0 |  7038 |      0 |      0 |          1 |
+|       final_divider         |               divider_13 |         62 |         62 |       0 |    0 |    89 |      0 |      0 |          0 |
 |   blue_ser                  |          tmds_serializer |          0 |          0 |       0 |    0 |     0 |      0 |      0 |          0 |
-|   counter_100hz_trigger     |                  counter |         18 |         18 |       0 |    0 |    32 |      0 |      0 |          0 |
+|   counter_100hz_trigger     |                  counter |         19 |         19 |       0 |    0 |    32 |      0 |      0 |          0 |
 |   counter_8khz_trigger      |                counter_0 |         19 |         19 |       0 |    0 |    32 |      0 |      0 |          0 |
 |   green_ser                 |        tmds_serializer_1 |          0 |          0 |       0 |    0 |     0 |      0 |      0 |          0 |
-|   mssc                      | seven_segment_controller |         27 |         27 |       0 |    0 |    28 |      0 |      0 |          0 |
-|   mvg                       |            video_sig_gen |        371 |        371 |       0 |    0 |    34 |      0 |      0 |          0 |
-|   my_game                   |                note_game |       2319 |       2319 |       0 |    0 |  2726 |      0 |      0 |          6 |
-|     (my_game)               |                note_game |        771 |        771 |       0 |    0 |   101 |      0 |      0 |          0 |
-|     ball                    |              ball_sprite |         76 |         76 |       0 |    0 |     0 |      0 |      0 |          6 |
-|     wall1                   |             block_sprite |        419 |        419 |       0 |    0 |   875 |      0 |      0 |          0 |
-|       note_display_inst     |      NoteSpriteDisplay_9 |        419 |        419 |       0 |    0 |   875 |      0 |      0 |          0 |
-|         (note_display_inst) |      NoteSpriteDisplay_9 |        292 |        292 |       0 |    0 |   859 |      0 |      0 |          0 |
+|   mssc                      | seven_segment_controller |         15 |         15 |       0 |    0 |    28 |      0 |      0 |          0 |
+|   mvg                       |            video_sig_gen |        374 |        374 |       0 |    0 |    34 |      0 |      0 |          0 |
+|   my_game                   |                note_game |       8170 |       8170 |       0 |    0 | 10370 |     16 |      0 |          7 |
+|     (my_game)               |                note_game |        659 |        659 |       0 |    0 |   610 |      0 |      0 |          0 |
+|     back                    |               background |        231 |        231 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     ball                    |              ball_sprite |        165 |        165 |       0 |    0 |     0 |      0 |      0 |          6 |
+|     note_loader             |               NoteLoader |       5227 |       5227 |       0 |    0 |  7135 |     16 |      0 |          1 |
+|       (note_loader)         |               NoteLoader |        118 |        118 |       0 |    0 |   560 |     16 |      0 |          0 |
+|       audio_processor       |              yinner_song |       5109 |       5109 |       0 |    0 |  6575 |      0 |      0 |          1 |
+|         (audio_processor)   |              yinner_song |       5065 |       5065 |       0 |    0 |  6518 |      0 |      0 |          1 |
+|         final_divider       |                  divider |         44 |         44 |       0 |    0 |    57 |      0 |      0 |          0 |
+|     wall1                   |             block_sprite |        579 |        579 |       0 |    0 |   875 |      0 |      0 |          0 |
+|       note_display_inst     |     NoteSpriteDisplay_11 |        579 |        579 |       0 |    0 |   875 |      0 |      0 |          0 |
+|         (note_display_inst) |     NoteSpriteDisplay_11 |        452 |        452 |       0 |    0 |   859 |      0 |      0 |          0 |
+|         rom_inst            |              font_rom_12 |        127 |        127 |       0 |    0 |    16 |      0 |      0 |          0 |
+|     wall1_note              |          FrequencyToNote |         57 |         57 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     wall2                   |           block_sprite_5 |        577 |        577 |       0 |    0 |   875 |      0 |      0 |          0 |
+|       note_display_inst     |      NoteSpriteDisplay_9 |        577 |        577 |       0 |    0 |   875 |      0 |      0 |          0 |
+|         (note_display_inst) |      NoteSpriteDisplay_9 |        450 |        450 |       0 |    0 |   859 |      0 |      0 |          0 |
 |         rom_inst            |              font_rom_10 |        127 |        127 |       0 |    0 |    16 |      0 |      0 |          0 |
-|     wall2                   |           block_sprite_5 |        630 |        630 |       0 |    0 |   875 |      0 |      0 |          0 |
-|       note_display_inst     |      NoteSpriteDisplay_7 |        630 |        630 |       0 |    0 |   875 |      0 |      0 |          0 |
-|         (note_display_inst) |      NoteSpriteDisplay_7 |        503 |        503 |       0 |    0 |   859 |      0 |      0 |          0 |
-|         rom_inst            |               font_rom_8 |        127 |        127 |       0 |    0 |    16 |      0 |      0 |          0 |
-|     wall3                   |           block_sprite_6 |        423 |        423 |       0 |    0 |   875 |      0 |      0 |          0 |
-|       note_display_inst     |        NoteSpriteDisplay |        423 |        423 |       0 |    0 |   875 |      0 |      0 |          0 |
-|         (note_display_inst) |        NoteSpriteDisplay |        296 |        296 |       0 |    0 |   859 |      0 |      0 |          0 |
+|     wall2_note              |        FrequencyToNote_6 |         55 |         55 |       0 |    0 |     0 |      0 |      0 |          0 |
+|     wall3                   |           block_sprite_7 |        565 |        565 |       0 |    0 |   875 |      0 |      0 |          0 |
+|       note_display_inst     |        NoteSpriteDisplay |        565 |        565 |       0 |    0 |   875 |      0 |      0 |          0 |
+|         (note_display_inst) |        NoteSpriteDisplay |        438 |        438 |       0 |    0 |   859 |      0 |      0 |          0 |
 |         rom_inst            |                 font_rom |        127 |        127 |       0 |    0 |    16 |      0 |      0 |          0 |
-|   my_spi_con                |                  spi_con |         26 |         26 |       0 |    0 |    39 |      0 |      0 |          0 |
+|     wall3_note              |        FrequencyToNote_8 |         55 |         55 |       0 |    0 |     0 |      0 |      0 |          0 |
+|   my_spi_con                |                  spi_con |         22 |         22 |       0 |    0 |    39 |      0 |      0 |          0 |
 |   red_ser                   |        tmds_serializer_2 |          1 |          1 |       0 |    0 |     1 |      0 |      0 |          0 |
-|   sd_card                   |                sd_access |         83 |         83 |       0 |    0 |   100 |      0 |      0 |          0 |
-|     (sd_card)               |                sd_access |         28 |         28 |       0 |    0 |    60 |      0 |      0 |          0 |
-|     spi_inst                |  spi_con__parameterized0 |         55 |         55 |       0 |    0 |    40 |      0 |      0 |          0 |
-|   tmds_blue                 |             tmds_encoder |          2 |          2 |       0 |    0 |    14 |      0 |      0 |          0 |
-|   tmds_green                |           tmds_encoder_3 |          2 |          2 |       0 |    0 |    13 |      0 |      0 |          0 |
-|   tmds_red                  |           tmds_encoder_4 |          3 |          3 |       0 |    0 |    14 |      0 |      0 |          0 |
+|   sd_card                   |                sd_access |        127 |        127 |       0 |    0 |   105 |      0 |      0 |          0 |
+|     (sd_card)               |                sd_access |         44 |         44 |       0 |    0 |    65 |      0 |      0 |          0 |
+|     spi_inst                |  spi_con__parameterized0 |         83 |         83 |       0 |    0 |    40 |      0 |      0 |          0 |
+|   tmds_blue                 |             tmds_encoder |          3 |          3 |       0 |    0 |    14 |      0 |      0 |          0 |
+|   tmds_green                |           tmds_encoder_3 |          4 |          4 |       0 |    0 |    13 |      0 |      0 |          0 |
+|   tmds_red                  |           tmds_encoder_4 |          4 |          4 |       0 |    0 |    14 |      0 |      0 |          0 |
 |   wizard_hdmi               |          cw_hdmi_clk_wiz |          0 |          0 |       0 |    0 |     0 |      0 |      0 |          0 |
 |   wizard_migcam             |          cw_fast_clk_wiz |          0 |          0 |       0 |    0 |     0 |      0 |      0 |          0 |
 +-----------------------------+--------------------------+------------+------------+---------+------+-------+--------+--------+------------+

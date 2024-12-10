@@ -1,6 +1,8 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1733620424" />
-    <testcase name="test_a" classname="test_FrequencyToNote" file="/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/test_FrequencyToNote.py" lineno="15" time="0.010233640670776367" sim_time_ns="2000.001" ratio_time="195433.96767010694" />
+    <property name="random_seed" value="1733866293" />
+    <testcase name="test_a" classname="test_NoteLoader" file="/Users/sriram/Documents/digital_systems/final_project/final_project_files/sim/test_NoteLoader.py" lineno="14" time="2.168513059616089" sim_time_ns="20.001" ratio_time="9.22337078456007">
+      <failure message="Test failed with RANDOM_SEED=1733866293" />
+    </testcase>
   </testsuite>
 </testsuites>

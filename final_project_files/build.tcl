@@ -71,18 +71,18 @@ if {[get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]] < 0} {
  puts "Found setup timing violations => running physical optimization"
  phys_opt_design
 }
-write_checkpoint -force $outputDir/post_place.dcp
-report_utilization -file $outputDir/post_place_util.rpt
-report_timing_summary -file $outputDir/post_place_timing_summary.rpt
-report_timing -file $outputDir/post_place_timing.rpt
+# write_checkpoint -force $outputDir/post_place.dcp
+# report_utilization -file $outputDir/post_place_util.rpt
+# report_timing_summary -file $outputDir/post_place_timing_summary.rpt
+# report_timing -file $outputDir/post_place_timing.rpt
 #Route design and generate bitstream
 route_design -directive Explore
-write_checkpoint -force $outputDir/post_route.dcp
-report_route_status -file $outputDir/post_route_status.rpt
-report_timing_summary -file $outputDir/post_route_timing_summary.rpt
-report_timing -file $outputDir/post_route_timing.rpt
-report_power -file $outputDir/post_route_power.rpt
-report_drc -file $outputDir/post_imp_drc.rpt
+# write_checkpoint -force $outputDir/post_route.dcp
+# report_route_status -file $outputDir/post_route_status.rpt
+# report_timing_summary -file $outputDir/post_route_timing_summary.rpt
+# report_timing -file $outputDir/post_route_timing.rpt
+# report_power -file $outputDir/post_route_power.rpt
+# report_drc -file $outputDir/post_imp_drc.rpt
 #set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
 #write_verilog -force $outputDir/cpu_impl_netlist.v -mode timesim -sdf_anno true
 write_bitstream -force $outputDir/final.bit

@@ -99,6 +99,11 @@ signal_c_high = signal[133000:134000]
 
 signals = [signal_c, signal_d, signal_e, signal_f, signal_g, signal_a, signal_b, signal_c_high]
 
+sample_rate, signal_actual = wavfile.read('/Users/sriram/Documents/digital_systems/final_project/final_project_files/test_scripts/tones.wav')
+print(f'{len(signal_actual)=}')
+signal_actual = signal_actual[20000:20500]
+
+
 
 # step response
 step = [127]
@@ -131,8 +136,8 @@ async def test_a(dut):
     dut.rst_in.value = 0
 
     # send audio into buffer
-    for i in range(len(signals[3])):
-        dut.audio_in.value = int(signals[3][i])
+    for i in range(len(signal_actual)):
+        dut.audio_in.value = int(signal_actual[i])
         dut.audio_in_valid.value = 1
 
         await ClockCycles(dut.clk_in, 1)
@@ -147,7 +152,7 @@ async def test_a(dut):
 
     # # get values out of buffer
     filtered = [int(i) for i in dut.my_yinner.sig_buffer.value]
-    plt.plot([i for i in range(len(filtered))], [int(f) for f in filtered])
+    plt.plot([i for i in range(len(signal_actual))], [int(f) for f in signal_actual])
     plt.show()
 
     # # wait for computation to be done

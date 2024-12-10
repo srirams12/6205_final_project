@@ -69,16 +69,53 @@ module note_game (
     localparam STOP = 2'b10; // Wall bounce decaying
 
     logic [15:0] song_note_frequencies [32-1:0];
-    always_comb begin
-        song_note_frequencies[0] = 262;
-        song_note_frequencies[1] = 440;
-        song_note_frequencies[2] = 622;
-        song_note_frequencies[3] = 349;
-        song_note_frequencies[4] = 392;
-        song_note_frequencies[5] = 440;
-        song_note_frequencies[6] = 494;
-        song_note_frequencies[7] = 523;
-    end
+    logic [15:0] note_loader_output [32-1:0];
+
+    logic note_loader_finished;
+    logic note_loader_start;
+    NoteLoader note_loader (
+        .clk_in(pixel_clk_in),
+        .rst_in(rst_in),
+        .start(note_loader_start),
+        .results(note_loader_output),
+        .done(note_loader_finished)
+    );
+    // always_comb begin
+    //     song_note_frequencies[0] = 395;
+    //     song_note_frequencies[1] = 264;
+    //     song_note_frequencies[2] = 264;
+    //     song_note_frequencies[3] = 314;
+    //     song_note_frequencies[4] = 395;
+    //     song_note_frequencies[5] = 395;
+    //     song_note_frequencies[6] = 395;
+    //     song_note_frequencies[7] = 395;
+    //     song_note_frequencies[8] = 418;
+    //     song_note_frequencies[9] = 352;
+    //     song_note_frequencies[10] = 352;
+    //     song_note_frequencies[11] = 418;
+    //     song_note_frequencies[12] = 526;
+    //     song_note_frequencies[13] = 526;
+    //     song_note_frequencies[14] = 395;
+    //     song_note_frequencies[15] = 395;
+    //     song_note_frequencies[16] = 264;
+    //     song_note_frequencies[17] = 264;
+    //     song_note_frequencies[18] = 264;
+    //     song_note_frequencies[19] = 314;
+    //     song_note_frequencies[20] = 395;
+    //     song_note_frequencies[21] = 395;
+    //     song_note_frequencies[22] = 395;
+    //     song_note_frequencies[23] = 395;
+    //     song_note_frequencies[24] = 352;
+    //     song_note_frequencies[25] = 352;
+    //     song_note_frequencies[26] = 314;
+    //     song_note_frequencies[27] = 296;
+    //     song_note_frequencies[28] = 264;
+    //     song_note_frequencies[29] = 264;
+    //     song_note_frequencies[30] = 264;
+    //     song_note_frequencies[31] = 264;
+
+
+    // end
     logic [15:0] true_note_frequencies [WALL_COUNT-1:0];
     logic [7:0] true_note_codes [WALL_COUNT-1:0];
     logic [5:0] song_note_counter [WALL_COUNT-1:0];
@@ -98,6 +135,24 @@ module note_game (
                 song_note_counter[i] <= i;
             end
             road_x <= 128;
+            note_loader_start <= 1;
+        end else if (note_loader_start) begin
+            if (note_loader_finished) begin
+                note_loader_start <= 0;
+
+                song_note_frequencies <= note_loader_output;
+
+                for (int i = 0; i < WALL_COUNT; i = i + 1) begin
+                    wall_x[i] <= SCREEN_WIDTH + i * (SCREEN_WIDTH / WALL_COUNT);
+                    bounce_offset[i] <= 0;     // No initial bounce
+                    wall_state[i] <= MOVE;     // Start in MOVE state
+                    trigger_bounce[i] <= 0; // Default to no bounce
+                    // true_note_frequencies[i] <= song_note_frequencies[i];
+                    song_note_counter[i] <= i;
+                end
+                road_x <= 128;
+
+            end
         end else if (nf_in) begin
             // Update logic for each wall
             logic trigger_stop[WALL_COUNT]; // Track which walls should stop
@@ -106,7 +161,7 @@ module note_game (
             end
 
             if (!freeze_screen && wall_state[0] == MOVE && wall_state[1] == MOVE && wall_state[2] == MOVE) begin
-                road_x <= road_x == 0 ? 128 : road_x - 1;
+                road_x <= road_x == 0 ? 128 : road_x - 2;
             end
 
             for (int i = 0; i < WALL_COUNT; i = i + 1) begin
@@ -123,7 +178,7 @@ module note_game (
                                 note_req <=1;                            
                             end else begin
                                 note_req <=0;                            
-                                wall_x[i] <= wall_x[i] - 1; // Move wall left     
+                                wall_x[i] <= wall_x[i] - 2; // Move wall left     
                             end
         
                             // Check for collision with the ball
